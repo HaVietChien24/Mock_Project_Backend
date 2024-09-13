@@ -15,7 +15,7 @@ namespace Mock.Core.Models
         public string Publisher { get; set; }
         public int PublishedYear { get; set; }
         public string ISBN { get; set; }
-        public virtual List<Genre>? Genres { get; set; } = new List<Genre>();
+        public virtual List<BookGenre> Genres { get; set; } = new List<BookGenre>();
         public int Amount { get; set; }
     }
 }
