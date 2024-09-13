@@ -1,4 +1,4 @@
-﻿
+
 namespace Mock.Core.Models
 {
     public class BorrowingDetails
@@ -13,3 +13,5 @@ namespace Mock.Core.Models
         public int NumberReturnedBook { get; set; } = 0;
     }
 }
+
+
