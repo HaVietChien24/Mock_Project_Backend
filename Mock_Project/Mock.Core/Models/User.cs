@@ -18,6 +18,7 @@ namespace Mock.Core.Models
         public string Password { get; set; }
         public bool IsActive { get; set; }
         public bool IsAdmin { get; set; }
-        
+        public List<Borrowing> Borrowings { get; set; }
+
     }
 }
