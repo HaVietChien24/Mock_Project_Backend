@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Mock.Core\Mock.Core.csproj" />
+  </ItemGroup>
+
 </Project>

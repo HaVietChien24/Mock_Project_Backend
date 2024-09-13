@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Mock.Core.Models
 {
     public class Book
@@ -15,7 +10,10 @@ namespace Mock.Core.Models
         public string Publisher { get; set; }
         public int PublishedYear { get; set; }
         public string ISBN { get; set; }
-        public virtual List<BookGenre> Genres { get; set; } = new List<BookGenre>();
+
+        public virtual List<BookGenre>? BookGenres { get; set; } = new List<BookGenre>();
+
+       
         public int Amount { get; set; }
     }
 }
