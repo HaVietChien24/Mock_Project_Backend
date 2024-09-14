@@ -8,6 +8,6 @@ namespace Mock.Core.Models
         public WishList WishList { get; set; }
         public int BookId { get; set; }
         public Book Book { get; set; }
-        public int Quantity { get; set; }
+        public int? Quantity { get; set; }
     }
 }
