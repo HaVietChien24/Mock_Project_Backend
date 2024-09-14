@@ -306,7 +306,7 @@ node_modules/
 *.dsp
 
 # Visual Studio 6 technical files
-
+Mock_Project/Mock_API/appsettings.json
 # Visual Studio LightSwitch build output
 **/*.HTMLClient/GeneratedArtifacts
 **/*.DesktopClient/GeneratedArtifacts
@@ -407,3 +407,4 @@ FodyWeavers.xsd
 # Ignore appsettings.json
 appsettings.json
 appsettings.Development.json
+
