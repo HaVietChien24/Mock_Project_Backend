@@ -5,6 +5,7 @@ namespace Mock.Repository.Repositories.Repository.Interfaces
 {
     public interface IBorrowingRepository : IGenericRepository<Borrowing>
     {
+        public List<Borrowing> GetAllBorrowings();
 
     }
 }
