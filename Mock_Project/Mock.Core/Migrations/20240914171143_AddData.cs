@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Mock.Core.Migrations
 {
     /// <inheritdoc />
-    public partial class AddEntities : Migration
+    public partial class AddData : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,13 +19,13 @@ namespace Mock.Core.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Author = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Publisher = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PublishedYear = table.Column<int>(type: "int", nullable: false),
-                    ISBN = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Amount = table.Column<int>(type: "int", nullable: false)
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Author = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Publisher = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PublishedYear = table.Column<int>(type: "int", nullable: true),
+                    ISBN = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Amount = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -38,7 +38,7 @@ namespace Mock.Core.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -51,15 +51,15 @@ namespace Mock.Core.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    IsAdmin = table.Column<bool>(type: "bit", nullable: false)
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: true),
+                    IsAdmin = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -97,14 +97,14 @@ namespace Mock.Core.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    RequestDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ExpectedPickUpDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    RequestDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ExpectedPickUpDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ActualPickUpDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ExpectedReturnDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TotalQuantity = table.Column<int>(type: "int", nullable: false),
-                    RequestStatus = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BorrowingStatus = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PenaltyFine = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    ExpectedReturnDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    TotalQuantity = table.Column<int>(type: "int", nullable: true),
+                    RequestStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BorrowingStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PenaltyFine = table.Column<decimal>(type: "decimal(18,2)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -124,7 +124,7 @@ namespace Mock.Core.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    TotalQuantity = table.Column<int>(type: "int", nullable: false)
+                    TotalQuantity = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -145,9 +145,10 @@ namespace Mock.Core.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BorrowingId = table.Column<int>(type: "int", nullable: false),
                     BookId = table.Column<int>(type: "int", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: true),
                     ActualReturnDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    NumberReturnedBook = table.Column<int>(type: "int", nullable: false)
+                    NumberReturnedBook = table.Column<int>(type: "int", nullable: true),
+                    Penalty = table.Column<decimal>(type: "decimal(18,2)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -174,7 +175,7 @@ namespace Mock.Core.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     WishListId = table.Column<int>(type: "int", nullable: false),
                     BookId = table.Column<int>(type: "int", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false)
+                    Quantity = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -201,6 +202,15 @@ namespace Mock.Core.Migrations
                     { 1, "josh@gmail.com", "Josh", null, true, true, "Miller", "$2a$12$PWrcJdxqn2qbniRRBOOFVOhpx925EOLuMJmEX1ZfOhsU0znIClGOu", "1234567890", "josh_miller" },
                     { 2, "mark@gmail.com", "Mark", null, true, true, "Smith", "$2a$12$PWrcJdxqn2qbniRRBOOFVOhpx925EOLuMJmEX1ZfOhsU0znIClGOu", "0987654321", "mark_smith" },
                     { 3, "jessica@gmail.com", "Jessica", null, true, true, "Johnson", "$2a$12$PWrcJdxqn2qbniRRBOOFVOhpx925EOLuMJmEX1ZfOhsU0znIClGOu", null, "jessica_johnson" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Borrowings",
+                columns: new[] { "Id", "ActualPickUpDate", "BorrowingStatus", "ExpectedPickUpDate", "ExpectedReturnDate", "PenaltyFine", "RequestDate", "RequestStatus", "TotalQuantity", "UserId" },
+                values: new object[,]
+                {
+                    { 1, null, "In Progress", new DateTime(2024, 9, 15, 0, 11, 42, 708, DateTimeKind.Local).AddTicks(4950), new DateTime(2024, 9, 22, 0, 11, 42, 708, DateTimeKind.Local).AddTicks(4952), 0m, new DateTime(2024, 9, 10, 0, 11, 42, 708, DateTimeKind.Local).AddTicks(4933), "Pending", 2, 1 },
+                    { 2, new DateTime(2024, 9, 7, 0, 11, 42, 708, DateTimeKind.Local).AddTicks(4962), "Completed", new DateTime(2024, 9, 7, 0, 11, 42, 708, DateTimeKind.Local).AddTicks(4962), new DateTime(2024, 9, 20, 0, 11, 42, 708, DateTimeKind.Local).AddTicks(4963), 10m, new DateTime(2024, 9, 5, 0, 11, 42, 708, DateTimeKind.Local).AddTicks(4961), "Approved", 3, 2 }
                 });
 
             migrationBuilder.CreateIndex(

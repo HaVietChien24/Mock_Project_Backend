@@ -49,5 +49,39 @@ namespace Mock.Core.Data
                 }
             };
         }
+
+        public static List<Borrowing> SeedBorrowing()
+        {
+            return new List<Borrowing>()
+            {
+                new Borrowing
+                {
+                    Id = 1,
+                    UserId = 1,
+                    RequestDate = DateTime.Now.AddDays(-5),
+                    ExpectedPickUpDate = DateTime.Now,
+                    ActualPickUpDate = null, 
+                    ExpectedReturnDate = DateTime.Now.AddDays(7),
+                    TotalQuantity = 2,
+                    RequestStatus = "Pending",
+                    BorrowingStatus = "In Progress",
+                    PenaltyFine = 0
+                },
+                new Borrowing
+                {
+                    Id = 2,
+                    UserId = 2,
+                    RequestDate = DateTime.Now.AddDays(-10),
+                    ExpectedPickUpDate = DateTime.Now.AddDays(-8),
+                    ActualPickUpDate = DateTime.Now.AddDays(-8),
+                    ExpectedReturnDate = DateTime.Now.AddDays(5),
+                    TotalQuantity = 3,
+                    RequestStatus = "Approved",
+                    BorrowingStatus = "Completed",
+                    PenaltyFine = 10
+                }
+
+            };
+        }
     }
 }

@@ -405,3 +405,4 @@ FodyWeavers.xsd
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio
 /Mock_Project/Mock.API/appsettings.json
 /Mock_Project/Mock.API/appsettings.json
+/Mock_Project/Mock.API/appsettings.json
