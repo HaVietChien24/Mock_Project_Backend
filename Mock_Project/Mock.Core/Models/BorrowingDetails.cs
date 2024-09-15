@@ -11,7 +11,7 @@ namespace Mock.Core.Models
         public int? Quantity { get; set; }
         public DateTime? ActualReturnDate { get; set; } //ngày trả thực tế
         public int? NumberReturnedBook { get; set; } = 0;
-        public decimal ? Penalty { get; set; }
+        public decimal? Penalty { get; set; }
     }
 }
 

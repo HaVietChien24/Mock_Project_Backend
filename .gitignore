@@ -404,7 +404,9 @@ FodyWeavers.xsd
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio
 
+
 # Ignore appsettings.json
 appsettings.json
 appsettings.Development.json
+
 

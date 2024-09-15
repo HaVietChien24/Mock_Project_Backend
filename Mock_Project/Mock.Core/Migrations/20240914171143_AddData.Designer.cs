@@ -12,8 +12,8 @@ using Mock.Core.Data;
 namespace Mock.Core.Migrations
 {
     [DbContext(typeof(LivebraryContext))]
-    [Migration("20240913081505_AddEntities")]
-    partial class AddEntities
+    [Migration("20240914171143_AddData")]
+    partial class AddData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,30 +33,25 @@ namespace Mock.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Amount")
+                    b.Property<int?>("Amount")
                         .HasColumnType("int");
 
                     b.Property<string>("Author")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ISBN")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PublishedYear")
+                    b.Property<int?>("PublishedYear")
                         .HasColumnType("int");
 
                     b.Property<string>("Publisher")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -91,26 +86,24 @@ namespace Mock.Core.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("BorrowingStatus")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ExpectedPickUpDate")
+                    b.Property<DateTime?>("ExpectedPickUpDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("ExpectedReturnDate")
+                    b.Property<DateTime?>("ExpectedReturnDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("PenaltyFine")
+                    b.Property<decimal?>("PenaltyFine")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime>("RequestDate")
+                    b.Property<DateTime?>("RequestDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("RequestStatus")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TotalQuantity")
+                    b.Property<int?>("TotalQuantity")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
@@ -121,6 +114,33 @@ namespace Mock.Core.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Borrowings");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            BorrowingStatus = "In Progress",
+                            ExpectedPickUpDate = new DateTime(2024, 9, 15, 0, 11, 42, 708, DateTimeKind.Local).AddTicks(4950),
+                            ExpectedReturnDate = new DateTime(2024, 9, 22, 0, 11, 42, 708, DateTimeKind.Local).AddTicks(4952),
+                            PenaltyFine = 0m,
+                            RequestDate = new DateTime(2024, 9, 10, 0, 11, 42, 708, DateTimeKind.Local).AddTicks(4933),
+                            RequestStatus = "Pending",
+                            TotalQuantity = 2,
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ActualPickUpDate = new DateTime(2024, 9, 7, 0, 11, 42, 708, DateTimeKind.Local).AddTicks(4962),
+                            BorrowingStatus = "Completed",
+                            ExpectedPickUpDate = new DateTime(2024, 9, 7, 0, 11, 42, 708, DateTimeKind.Local).AddTicks(4962),
+                            ExpectedReturnDate = new DateTime(2024, 9, 20, 0, 11, 42, 708, DateTimeKind.Local).AddTicks(4963),
+                            PenaltyFine = 10m,
+                            RequestDate = new DateTime(2024, 9, 5, 0, 11, 42, 708, DateTimeKind.Local).AddTicks(4961),
+                            RequestStatus = "Approved",
+                            TotalQuantity = 3,
+                            UserId = 2
+                        });
                 });
 
             modelBuilder.Entity("Mock.Core.Models.BorrowingDetails", b =>
@@ -140,10 +160,13 @@ namespace Mock.Core.Migrations
                     b.Property<int>("BorrowingId")
                         .HasColumnType("int");
 
-                    b.Property<int>("NumberReturnedBook")
+                    b.Property<int?>("NumberReturnedBook")
                         .HasColumnType("int");
 
-                    b.Property<int>("Quantity")
+                    b.Property<decimal?>("Penalty")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("Quantity")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -164,7 +187,6 @@ namespace Mock.Core.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -184,31 +206,27 @@ namespace Mock.Core.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsAdmin")
+                    b.Property<bool?>("IsAdmin")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -261,7 +279,7 @@ namespace Mock.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("TotalQuantity")
+                    b.Property<int?>("TotalQuantity")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
@@ -285,7 +303,7 @@ namespace Mock.Core.Migrations
                     b.Property<int>("BookId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Quantity")
+                    b.Property<int?>("Quantity")
                         .HasColumnType("int");
 
                     b.Property<int>("WishListId")
