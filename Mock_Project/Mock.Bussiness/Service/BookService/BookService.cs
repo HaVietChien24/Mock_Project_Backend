@@ -23,9 +23,21 @@ namespace Mock.Bussiness.Service.BookService
         }
 
         public BookDTO GetDTOById(int id)
+
         {
             var item = _unitOfWork.BookRepository.GetByID(id, "BookGenres.Genre");
             return _mapper.Map<BookDTO>(item);
+        }
+        public List<BookDTO> GetBookDTOByGenreId(int id)
+        {
+            var list = _unitOfWork.BookRepository.GetByGenreId(id);
+            return _mapper.Map<List<BookDTO>>(list);
+        }
+
+        public List<BookDTO> SearchByTitleOrAuthor(string search)
+        {
+            var list = _unitOfWork.BookRepository.SearchByTitleOrAuthor(search);
+            return _mapper.Map<List<BookDTO>>(list);
         }
     }
 }

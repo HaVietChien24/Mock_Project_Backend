@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Mock.Bussiness.Service.BookService;
 
 namespace Mock.API.Controllers
@@ -20,6 +19,42 @@ namespace Mock.API.Controllers
             try
             {
                 var list = _bookService.GetAllDTO();
+                if (list.Count == 0)
+                {
+                    return Ok("Không có dữ liệu");
+                }
+                return Ok(list);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Có lỗi xảy ra");
+            }
+        }
+
+        [HttpGet("get-by-genre-id/{id}")]
+        public IActionResult GetByGenreId(int id)
+        {
+            try
+            {
+                var list = _bookService.GetBookDTOByGenreId(id);
+                if (list.Count == 0)
+                {
+                    return Ok("Không có dữ liệu");
+                }
+                return Ok(list);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Có lỗi xảy ra");
+            }
+        }
+
+        [HttpGet("search-by-title-or-author")]
+        public IActionResult SearchByTitleOrAuthor([FromQuery] string search)
+        {
+            try
+            {
+                var list = _bookService.SearchByTitleOrAuthor(search);
                 if (list.Count == 0)
                 {
                     return Ok("Không có dữ liệu");
