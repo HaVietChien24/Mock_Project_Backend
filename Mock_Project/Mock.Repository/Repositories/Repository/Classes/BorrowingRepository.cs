@@ -14,6 +14,11 @@ namespace Mock.Repository.Repositories.Repository.Classes
             _context = context;
         }
 
+        public string CheckBorrowingStatus(int borrowingId)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<Borrowing> GetAllBorrowings()
         {
            return _context.Borrowings.Include(c=>c.User).ToList();
