@@ -16,12 +16,12 @@ namespace Mock.API.Controllers
         }
         [HttpGet]
 
-        public IActionResult GetAllBorrowing(string? userName, string? borrowStatus,int page=1, int pageSize=1) {
+        public IActionResult GetAllBorrowing(string? userName, string? borrowStatus,int page=1, int pageSize=5) {
 
           var result=  _service.GetAllBorrowing(page, pageSize, userName, borrowStatus);
             return Ok(result);
         }
-        [HttpPost]
+        [HttpPut]
         public IActionResult UpdateReturnedBook(int borrowingDetailId, int numberBookReturned)
         {
             var result = _service.UpdateReturnedBook(borrowingDetailId, numberBookReturned);

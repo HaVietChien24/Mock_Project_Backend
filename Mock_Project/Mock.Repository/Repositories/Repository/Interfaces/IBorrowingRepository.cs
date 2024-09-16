@@ -8,5 +8,7 @@ namespace Mock.Repository.Repositories.Repository.Interfaces
         public List<Borrowing> GetAllBorrowings();
         public string CheckBorrowingStatus(int borrowingId);
 
+        public List<BorrowingDetails> GetBorrowingDetails(int borrowingId);
+
     }
 }

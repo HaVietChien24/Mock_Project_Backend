@@ -23,5 +23,12 @@ namespace Mock.Repository.Repositories.Repository.Classes
         {
            return _context.Borrowings.Include(c=>c.User).ToList();
         }
+
+        public List<BorrowingDetails> GetBorrowingDetails(int borrowingId)
+        {
+            var borrowingDetail= _context.BorrowingDetails.Include(c=>c.Book).ToList();
+
+            return borrowingDetail;
+        }
     }
 }
