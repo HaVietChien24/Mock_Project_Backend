@@ -15,7 +15,6 @@ namespace Mock.API.Controllers
             _service = service;
         }
         [HttpGet]
-
         public IActionResult GetAllBorrowing(string? userName, string? borrowStatus,int page=1, int pageSize=5) {
 
           var result=  _service.GetAllBorrowing(page, pageSize, userName, borrowStatus);
@@ -30,6 +29,12 @@ namespace Mock.API.Controllers
                 return Ok(result);
             }
             return BadRequest(result);
+        }
+        [HttpGet]
+        public IActionResult GetBorrowingDetail(int borrowingId, int page = 1, int pageSize = 5)
+        {
+            var result = _service.GetAllBorrowingDetail(borrowingId,page, pageSize);
+            return Ok(result);
         }
     }
 }
