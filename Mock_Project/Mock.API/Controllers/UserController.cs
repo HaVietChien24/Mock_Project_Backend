@@ -22,7 +22,7 @@ namespace Mock.API.Controllers
 
         [HttpPost("login")]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(LoginDTO loginDTO) 
+        public IActionResult Login(LoginDTO loginDTO) 
         {
             User userFromDb = _userService.GetByUsername(loginDTO.Username);
 
@@ -49,7 +49,7 @@ namespace Mock.API.Controllers
 
         [HttpPost("register")]
         [AllowAnonymous]
-        public async Task<IActionResult> Register(RegisterDTO registerDTO)
+        public IActionResult Register(RegisterDTO registerDTO)
         {
             User userFromDb = _userService.GetByUsername(registerDTO.Username);
 
@@ -92,6 +92,20 @@ namespace Mock.API.Controllers
             {
                 return BadRequest("Register User Failed");
             }
+        }
+
+
+        [HttpGet("{id}")]
+        public IActionResult GetCurrentUser(int id)
+        {
+            User userFromDb = _userService.GetByID(id);
+
+            if (userFromDb == null) 
+            {
+                return NotFound();
+            }
+
+            return Ok(userFromDb);
         }
     }
 }
