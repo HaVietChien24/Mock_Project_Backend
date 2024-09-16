@@ -12,14 +12,39 @@ namespace Mock.Bussiness.Service.UserService
             _unitOfWork = unitOfWork;
         }
 
-        public void Login()
+        public bool CheckPasswordCorrect(string inputPassword, string hashedPassword)
         {
-            throw new NotImplementedException();
+            return _unitOfWork.UserRepository.CheckPasswordCorrect(inputPassword, hashedPassword);
         }
 
-        public void Register()
+        public User GetByUsername(string username)
         {
-            throw new NotImplementedException();
+            if (username == null)
+            {
+                throw new ArgumentNullException("Username cannot be null");
+            }
+            
+            return _unitOfWork.UserRepository.GetByUsername(username);
+        }
+
+        public string HashPassword(string passwordToHash)
+        {
+            if (passwordToHash == null)
+            {
+                throw new ArgumentNullException("Password to hash cannot be null");
+            }
+
+            return _unitOfWork.UserRepository.HashPassword(passwordToHash);
+        }
+
+        public string CreateToken(User user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException("User cannot be null");
+            }
+
+            return _unitOfWork.UserRepository.CreateToken(user);
         }
     }
 }

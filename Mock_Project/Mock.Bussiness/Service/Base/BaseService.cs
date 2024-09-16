@@ -16,7 +16,7 @@ namespace Mock.Bussiness.Service.Base
         {
             if (entity == null)
             {
-                throw new ArgumentNullException("Null entitly isn't allowed");
+                throw new ArgumentNullException("Null entity isn't allowed");
             }
 
             _unitOfWork.GenericRepository<T>().Add(entity);
@@ -29,7 +29,7 @@ namespace Mock.Bussiness.Service.Base
         {
             if (entity == null)
             {
-                throw new ArgumentNullException("Null entitly isn't allowed");
+                throw new ArgumentNullException("Null entity isn't allowed");
             }
 
             _unitOfWork.GenericRepository<T>().Delete(entity);
@@ -52,7 +52,7 @@ namespace Mock.Bussiness.Service.Base
         {
             if (entity == null)
             {
-                throw new ArgumentNullException("Null entitly isn't allowed");
+                throw new ArgumentNullException("Null entity isn't allowed");
             }
 
             _unitOfWork.GenericRepository<T>().Update(entity);

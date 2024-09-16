@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Mock.Bussiness.DTO;
-using Mock.Bussiness.Service.BorrowingService;
+using Mock.Bussiness.Service.UserService;
 using Mock.Core.Data;
 using Mock.Repository.UnitOfWork;
 
@@ -14,10 +14,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<IBorrowingService,BorrowingService>();
+//builder.Services.AddScoped<IBorrowingService, Borrowing>();
 
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+builder.Services.AddScoped<IUserService, UserService>();
 
 
 builder.Services.AddDbContext<LivebraryContext>(option =>
@@ -25,7 +27,17 @@ builder.Services.AddDbContext<LivebraryContext>(option =>
     var conn = builder.Configuration.GetConnectionString("DefaultConnection");
     option.UseSqlServer(conn);
 });
-builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "CorsPolicy", policy => 
+    { 
+        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); 
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -34,6 +46,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("CorsPolicy");
 
 app.UseAuthorization();
 

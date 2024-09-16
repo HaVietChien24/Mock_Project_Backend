@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Mock.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mock.Core.Data
 {
@@ -52,6 +47,11 @@ namespace Mock.Core.Data
             modelBuilder.Entity<Borrowing>()
                 .HasOne(b => b.User)
                 .WithMany(a => a.Borrowings)
+                .HasForeignKey(b => b.UserId);
+
+            modelBuilder.Entity<WishList>()
+                .HasOne(b => b.User)
+                .WithMany(a => a.WishLists)
                 .HasForeignKey(b => b.UserId);
 
             modelBuilder.Entity<User>().HasData(

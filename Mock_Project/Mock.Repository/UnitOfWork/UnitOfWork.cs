@@ -1,4 +1,5 @@
-﻿using Mock.Core.Data;
+﻿using Microsoft.Extensions.Configuration;
+using Mock.Core.Data;
 using Mock.Repository.Repositories.Generic;
 using Mock.Repository.Repositories.Repository.Classes;
 using Mock.Repository.Repositories.Repository.Interfaces;
@@ -8,6 +9,7 @@ namespace Mock.Repository.UnitOfWork
     public class UnitOfWork : IUnitOfWork
     {
         private readonly LivebraryContext _context;
+        private readonly IConfiguration _configuration;
 
         private IBookRepository _bookRepository;
         private IBorrowingRepository _borrowingRepository;
@@ -17,10 +19,12 @@ namespace Mock.Repository.UnitOfWork
         private IWishListDetailRepository _wishListDetailRepository;
         private IWishListRepository _wishListRepository;
         private IBookGenreRepository _bookGenreRepository;
+        
 
-        public UnitOfWork(LivebraryContext context)
+        public UnitOfWork(LivebraryContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         public IBookRepository BookRepository => _bookRepository ?? new BookRepository(_context);
@@ -31,7 +35,7 @@ namespace Mock.Repository.UnitOfWork
 
         public IBorrowDetailRepository BorrowDetailRepository => _borrowDetailRepository ?? new BorrowDetailRepository(_context);
 
-        public IUserRepository UserRepository => _userRepository ?? new UserRepository(_context);
+        public IUserRepository UserRepository => _userRepository ?? new UserRepository(_context, _configuration);
 
         public IWishListRepository WishListRepository => _wishListRepository ?? new WishListRepository(_context);
 

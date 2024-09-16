@@ -16,7 +16,7 @@ namespace Mock.Repository.Repositories.Repository.Classes
 
         public List<Borrowing> GetAllBorrowings()
         {
-           return _context.Borrowings.Include(c=>c.User).ToList();
+            return _context.Borrowings.Include(c=>c.User).ToList();
         }
     }
 }
