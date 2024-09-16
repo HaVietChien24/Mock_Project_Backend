@@ -33,6 +33,8 @@ builder.Services.AddDbContext<LivebraryContext>(option =>
     option.UseSqlServer(conn);
 });
 
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
 builder.Services.AddCors(options =>
@@ -41,6 +43,7 @@ builder.Services.AddCors(options =>
     { 
         policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); 
     });
+
 });
 
 var app = builder.Build();
@@ -55,7 +58,6 @@ if (app.Environment.IsDevelopment())
 app.UseCors("CorsPolicy");
 
 app.UseAuthorization();
-
 
 app.MapControllers();
 
