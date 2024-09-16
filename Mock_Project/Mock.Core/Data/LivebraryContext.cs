@@ -22,6 +22,8 @@ namespace Mock.Core.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<BookGenre>().HasKey(bg => new { bg.BookId, bg.GenreId });
 
             modelBuilder.Entity<BookGenre>()
@@ -57,8 +59,7 @@ namespace Mock.Core.Data
             modelBuilder.Entity<User>().HasData(
                 SeedData.SeedUser()
             );
-            base.OnModelCreating(modelBuilder);
-
+           
         }
     }
 }
