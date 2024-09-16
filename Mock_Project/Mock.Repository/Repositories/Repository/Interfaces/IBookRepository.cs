@@ -5,6 +5,8 @@ namespace Mock.Repository.Repositories.Repository.Interfaces
 {
     public interface IBookRepository : IGenericRepository<Book>
     {
+        List<Book> GetByGenreId(int id);
+        List<Book> SearchByTitleOrAuthor(string search);
 
     }
 }
