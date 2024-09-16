@@ -21,5 +21,15 @@ namespace Mock.API.Controllers
           var result=  _service.GetAllBorrowing(page, pageSize, userName, borrowStatus);
             return Ok(result);
         }
+        [HttpPost]
+        public IActionResult UpdateReturnedBook(int borrowingDetailId, int numberBookReturned)
+        {
+            var result = _service.UpdateReturnedBook(borrowingDetailId, numberBookReturned);
+            if (result == "Cập nhật số lượng sách trả thành công." || result == "Đã trả xong tất cả sách.")
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
     }
 }

@@ -57,9 +57,6 @@ namespace Mock.Core.Data
             modelBuilder.Entity<User>().HasData(
                 SeedData.SeedUser()
             );
-            modelBuilder.Entity<Borrowing>().HasData(
-                SeedData.SeedBorrowing()
-            );
             base.OnModelCreating(modelBuilder);
 
         }
