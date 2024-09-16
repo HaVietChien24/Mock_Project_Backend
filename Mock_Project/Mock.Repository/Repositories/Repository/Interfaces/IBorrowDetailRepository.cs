@@ -6,6 +6,7 @@ namespace Mock.Repository.Repositories.Repository.Interfaces
 {
     public interface IBorrowDetailRepository : IGenericRepository<BorrowingDetails>
     {
+        public string UpdateReturnedBook(int borrowingDetailId, int numberBookReturned);
 
     }
 }

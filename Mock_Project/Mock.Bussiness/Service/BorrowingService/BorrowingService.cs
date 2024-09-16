@@ -31,5 +31,11 @@ namespace Mock.Bussiness.Service.BorrowingService
             var result = PageList<BorrowingDTO>.CreatePage(borrowingDTO, page, pageSize);
             return result;
         }
+        public string UpdateReturnedBook(int borrowingDetailId, int numberBookReturned)
+        {
+           
+            var result = _unitOfWork.BorrowDetailRepository.UpdateReturnedBook(borrowingDetailId, numberBookReturned);
+            return result;
+        }
     }
 }
