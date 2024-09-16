@@ -11,7 +11,7 @@
         public DateTime? ExpectedReturnDate { get; set; } //ngày dự kiến trả
         public int? TotalQuantity { get; set; }
         public string? RequestStatus { get; set; }
-        public string? BorrowingStatus { get; set; }
+        public string? BorrowingStatus { get; set; } // đã trả, chưa trả, chưa trả đủ
         public decimal? PenaltyFine { get; set; } = 0;
         public virtual List<BorrowingDetails> BorrowingDetails { get; set; } = new List<BorrowingDetails>();
 
