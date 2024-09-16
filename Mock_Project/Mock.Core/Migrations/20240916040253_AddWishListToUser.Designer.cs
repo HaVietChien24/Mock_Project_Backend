@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mock.Core.Data;
 
@@ -11,9 +12,11 @@ using Mock.Core.Data;
 namespace Mock.Core.Migrations
 {
     [DbContext(typeof(LivebraryContext))]
-    partial class LivebraryContextModelSnapshot : ModelSnapshot
+    [Migration("20240916040253_AddWishListToUser")]
+    partial class AddWishListToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -117,10 +120,10 @@ namespace Mock.Core.Migrations
                         {
                             Id = 1,
                             BorrowingStatus = "In Progress",
-                            ExpectedPickUpDate = new DateTime(2024, 9, 16, 9, 12, 20, 378, DateTimeKind.Local).AddTicks(6374),
-                            ExpectedReturnDate = new DateTime(2024, 9, 23, 9, 12, 20, 378, DateTimeKind.Local).AddTicks(6375),
+                            ExpectedPickUpDate = new DateTime(2024, 9, 16, 11, 2, 52, 804, DateTimeKind.Local).AddTicks(6237),
+                            ExpectedReturnDate = new DateTime(2024, 9, 23, 11, 2, 52, 804, DateTimeKind.Local).AddTicks(6240),
                             PenaltyFine = 0m,
-                            RequestDate = new DateTime(2024, 9, 11, 9, 12, 20, 378, DateTimeKind.Local).AddTicks(6327),
+                            RequestDate = new DateTime(2024, 9, 11, 11, 2, 52, 804, DateTimeKind.Local).AddTicks(6211),
                             RequestStatus = "Pending",
                             TotalQuantity = 2,
                             UserId = 1
@@ -165,9 +168,6 @@ namespace Mock.Core.Migrations
 
                     b.Property<int?>("Quantity")
                         .HasColumnType("int");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

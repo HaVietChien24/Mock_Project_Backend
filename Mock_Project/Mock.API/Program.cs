@@ -1,23 +1,30 @@
 using Microsoft.EntityFrameworkCore;
 using Mock.Bussiness.DTO;
-using Mock.Bussiness.Service.BorrowingService;
+using Mock.Bussiness.Service.UserService;
 using Mock.Core.Data;
 using Mock.Repository.UnitOfWork;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    options.JsonSerializerOptions.WriteIndented = true;
+}); ;
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<IBorrowingService,BorrowingService>();
+//builder.Services.AddScoped<IBorrowingService, Borrowing>();
 
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+builder.Services.AddScoped<IUserService, UserService>();
 
 
 builder.Services.AddDbContext<LivebraryContext>(option =>
@@ -25,10 +32,18 @@ builder.Services.AddDbContext<LivebraryContext>(option =>
     var conn = builder.Configuration.GetConnectionString("DefaultConnection");
     option.UseSqlServer(conn);
 });
+
 builder.Services.AddAutoMapper(typeof(MappingProfile));
-builder.Services.AddCors(option =>
+
+builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
+
+builder.Services.AddCors(options =>
 {
-    option.AddPolicy("AllowAnyOrigin", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+    options.AddPolicy(name: "CorsPolicy", policy => 
+    { 
+        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); 
+    });
+
 });
 
 var app = builder.Build();
@@ -40,9 +55,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("CorsPolicy");
+
 app.UseAuthorization();
 
-app.UseCors("AllowAnyOrigin");
 app.MapControllers();
 
 app.Run();

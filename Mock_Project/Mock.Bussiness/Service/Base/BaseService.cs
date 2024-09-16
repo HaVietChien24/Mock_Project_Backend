@@ -16,7 +16,7 @@ namespace Mock.Bussiness.Service.Base
         {
             if (entity == null)
             {
-                throw new ArgumentNullException("Null entitly isn't allowed");
+                throw new ArgumentNullException("Null entity isn't allowed");
             }
 
             _unitOfWork.GenericRepository<T>().Add(entity);
@@ -29,7 +29,7 @@ namespace Mock.Bussiness.Service.Base
         {
             if (entity == null)
             {
-                throw new ArgumentNullException("Null entitly isn't allowed");
+                throw new ArgumentNullException("Null entity isn't allowed");
             }
 
             _unitOfWork.GenericRepository<T>().Delete(entity);
@@ -38,21 +38,21 @@ namespace Mock.Bussiness.Service.Base
             return result;
         }
 
-        public T GetByID(int id)
+        public T GetByID(int id, string includeProperties = null)
         {
-            return _unitOfWork.GenericRepository<T>().GetByID(id);
+            return _unitOfWork.GenericRepository<T>().GetByID(id, includeProperties);
         }
 
-        public IList<T> GetAll()
+        public IList<T> GetAll(string includeProperties = null)
         {
-            return _unitOfWork.GenericRepository<T>().GetAll();
+            return _unitOfWork.GenericRepository<T>().GetAll(includeProperties);
         }
 
         public int Update(T entity)
         {
             if (entity == null)
             {
-                throw new ArgumentNullException("Null entitly isn't allowed");
+                throw new ArgumentNullException("Null entity isn't allowed");
             }
 
             _unitOfWork.GenericRepository<T>().Update(entity);

@@ -2,11 +2,6 @@
 using Mock.Bussiness.DTO;
 using Mock.Core.Models;
 using Mock.Repository.UnitOfWork;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mock.Bussiness.Service.BorrowingService
 {

@@ -1,10 +1,5 @@
 ﻿using AutoMapper;
 using Mock.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mock.Bussiness.DTO
 {
@@ -14,8 +9,10 @@ namespace Mock.Bussiness.DTO
         {
             CreateMap<Borrowing, BorrowingDTO>()
            .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.FirstName+src.User.LastName)).ReverseMap();
-            
-           
+             
+
+            CreateMap<RegisterDTO, User>();
+
         }
     }
 }

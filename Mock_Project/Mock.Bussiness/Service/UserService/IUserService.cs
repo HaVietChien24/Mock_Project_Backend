@@ -1,9 +1,9 @@
-﻿using Mock.Core.Models;
-using Mock.Repository.Repositories.Generic;
+﻿using Mock.Bussiness.Service.Base;
+using Mock.Core.Models;
 
-namespace Mock.Repository.Repositories.Repository.Interfaces
+namespace Mock.Bussiness.Service.UserService
 {
-    public interface IUserRepository : IGenericRepository<User>
+    public interface IUserService : IBaseService<User>
     {
         User GetByUsername(string username);
         string HashPassword(string passwordToHash);
