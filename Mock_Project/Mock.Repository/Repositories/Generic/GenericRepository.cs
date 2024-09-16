@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using Mock.Core.Data;
 
 namespace Mock.Repository.Repositories.Generic
@@ -24,14 +25,32 @@ namespace Mock.Repository.Repositories.Generic
             _context.Remove(entity);
         }
 
-        public IList<T> GetAll()
+        public T GetByID(int id, string includeProperties = null)
         {
-            return _dbSet.ToList();
+            IQueryable<T> list = _dbSet;
+
+            if (string.IsNullOrEmpty(includeProperties) == false)
+            {
+                list = list.Include(includeProperties);
+            }
+
+            var item = list.FirstOrDefault(item => EF.Property<int>(item, "Id") == id);
+
+            return item;
         }
 
-        public T GetByID(int id)
+        public IList<T> GetAll(string includeProperties = null)
         {
-            return _dbSet.FirstOrDefault(item => EF.Property<int>(item, "Id") == id);
+            IQueryable<T> list = _dbSet;
+
+            if (string.IsNullOrEmpty(includeProperties) == false)
+            {
+                list = list.Include(includeProperties);
+            }
+
+            IList<T> result = list.ToList();
+
+            return result;
         }
 
         public void Update(T entity)
