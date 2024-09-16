@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mock.Core.Data;
 
@@ -11,9 +12,11 @@ using Mock.Core.Data;
 namespace Mock.Core.Migrations
 {
     [DbContext(typeof(LivebraryContext))]
-    partial class LivebraryContextModelSnapshot : ModelSnapshot
+    [Migration("20240916021221_updateDB")]
+    partial class updateDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -128,12 +131,12 @@ namespace Mock.Core.Migrations
                         new
                         {
                             Id = 2,
-                            ActualPickUpDate = new DateTime(2024, 9, 8, 11, 2, 52, 804, DateTimeKind.Local).AddTicks(6249),
+                            ActualPickUpDate = new DateTime(2024, 9, 8, 9, 12, 20, 378, DateTimeKind.Local).AddTicks(6386),
                             BorrowingStatus = "Completed",
-                            ExpectedPickUpDate = new DateTime(2024, 9, 8, 11, 2, 52, 804, DateTimeKind.Local).AddTicks(6249),
-                            ExpectedReturnDate = new DateTime(2024, 9, 21, 11, 2, 52, 804, DateTimeKind.Local).AddTicks(6250),
+                            ExpectedPickUpDate = new DateTime(2024, 9, 8, 9, 12, 20, 378, DateTimeKind.Local).AddTicks(6385),
+                            ExpectedReturnDate = new DateTime(2024, 9, 21, 9, 12, 20, 378, DateTimeKind.Local).AddTicks(6388),
                             PenaltyFine = 10m,
-                            RequestDate = new DateTime(2024, 9, 6, 11, 2, 52, 804, DateTimeKind.Local).AddTicks(6248),
+                            RequestDate = new DateTime(2024, 9, 6, 9, 12, 20, 378, DateTimeKind.Local).AddTicks(6384),
                             RequestStatus = "Approved",
                             TotalQuantity = 3,
                             UserId = 2
@@ -206,31 +209,27 @@ namespace Mock.Core.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsAdmin")
+                    b.Property<bool?>("IsAdmin")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -374,7 +373,7 @@ namespace Mock.Core.Migrations
             modelBuilder.Entity("Mock.Core.Models.WishList", b =>
                 {
                     b.HasOne("Mock.Core.Models.User", "User")
-                        .WithMany("WishLists")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -419,8 +418,6 @@ namespace Mock.Core.Migrations
             modelBuilder.Entity("Mock.Core.Models.User", b =>
                 {
                     b.Navigation("Borrowings");
-
-                    b.Navigation("WishLists");
                 });
 
             modelBuilder.Entity("Mock.Core.Models.WishList", b =>
