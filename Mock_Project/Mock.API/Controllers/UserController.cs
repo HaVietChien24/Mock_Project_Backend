@@ -11,6 +11,7 @@ namespace Mock.API.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
         public UserController(IUserService userService, IMapper mapper)
@@ -24,26 +25,35 @@ namespace Mock.API.Controllers
         [AllowAnonymous]
         public IActionResult Login(LoginDTO loginDTO) 
         {
-            User userFromDb = _userService.GetByUsername(loginDTO.Username);
-
-            if (userFromDb == null)
+            try
             {
-                return NotFound("User not found");
-            }
+                User userFromDb = _userService.GetByUsername(loginDTO.Username);
 
-            if (_userService.CheckPasswordCorrect(loginDTO.Password, userFromDb.Password!) == false)
+                if (userFromDb == null)
+                {
+                    return BadRequest(new AuthResultDTO(null, "Incorrect credentials"));
+                }
+
+                bool isPasswordCorrect = _userService.CheckPasswordCorrect(loginDTO.Password, userFromDb.Password!);
+
+                if (isPasswordCorrect == false)
+                {
+                    return BadRequest(new AuthResultDTO(null, "Incorrect credentials"));
+                }
+
+                if (userFromDb.IsActive == false)
+                {
+                    return BadRequest(new AuthResultDTO(null, "Sorry but this account is currently being locked"));
+                }
+
+                string token = _userService.CreateToken(userFromDb);
+
+                return Ok(new AuthResultDTO(token, null));
+            }
+            catch (Exception ex) 
             {
-                return BadRequest("Incorrect Password");
+                return BadRequest(new AuthResultDTO(null, ex.Message));
             }
-
-            if (userFromDb.IsActive == false)
-            {
-                return BadRequest("Sorry but this account is currently being locked");
-            }
-
-            string token = _userService.CreateToken(userFromDb);
-            
-            return Ok(new AuthResultDTO(token));
         }
 
 
@@ -51,46 +61,53 @@ namespace Mock.API.Controllers
         [AllowAnonymous]
         public IActionResult Register(RegisterDTO registerDTO)
         {
-            User userFromDb = _userService.GetByUsername(registerDTO.Username);
-
-            if (_userService.GetByUsername(registerDTO.Username) != null)
+            try
             {
-                return BadRequest("Username already exists");
+                User userFromDb = _userService.GetByUsername(registerDTO.Username);
+
+                if (_userService.GetByUsername(registerDTO.Username) != null)
+                {
+                    return BadRequest("Username already exists");
+                }
+
+                if (_userService.GetAll().Any(x => x.Email == registerDTO.Email) == true)
+                {
+                    return BadRequest("Email already exists");
+                }
+
+                if (_userService.GetAll().Any(x => x.Phone == registerDTO.Phone) == true)
+                {
+                    return BadRequest("Phone Number already exists");
+                }
+
+                if (registerDTO.Password != registerDTO.ConfirmPassword)
+                {
+                    return BadRequest("Password and confirm password must match");
+                }
+
+                var newUser = new User();
+
+                _mapper.Map(registerDTO, newUser);
+                newUser.Password = _userService.HashPassword(newUser.Password);
+                newUser.IsActive = true;
+                newUser.IsAdmin = false;
+
+                int result = _userService.Add(newUser);
+
+                string token = _userService.CreateToken(newUser);
+
+                if (result > 0)
+                {
+                    return Ok(new AuthResultDTO(token, null));
+                }
+                else
+                {
+                    return BadRequest(new AuthResultDTO(null, "Register User Failed"));
+                }
             }
-
-            if (_userService.GetAll().Any(x => x.Email == registerDTO.Email) == true)
+            catch (Exception ex) 
             {
-                return BadRequest("Email already exists");
-            }
-
-            if (_userService.GetAll().Any(x => x.Phone == registerDTO.Phone) == true)
-            {
-                return BadRequest("Phone Number already exists");
-            }
-
-            if (registerDTO.Password != registerDTO.ConfirmPassword)
-            {
-                return BadRequest("Password and confirm password must match");
-            }
-
-            var newUser = new User();
-
-            _mapper.Map(registerDTO, newUser);
-            newUser.Password = _userService.HashPassword(newUser.Password);
-            newUser.IsActive = true;
-            newUser.IsAdmin = false;
-
-            int result = _userService.Add(newUser);
-
-            string token = _userService.CreateToken(newUser);
-
-            if (result > 0)
-            {
-                return Ok(new AuthResultDTO(token)); 
-            }
-            else
-            {
-                return BadRequest("Register User Failed");
+                return BadRequest(new AuthResultDTO(null, ex.Message));
             }
         }
 
@@ -100,12 +117,35 @@ namespace Mock.API.Controllers
         {
             User userFromDb = _userService.GetByID(id);
 
-            if (userFromDb == null) 
+            if (userFromDb == null)
             {
                 return NotFound();
             }
 
             return Ok(userFromDb);
+        }
+
+        [HttpGet("GetAllUser")]
+        public IActionResult GetAllUser()
+        {
+
+            var result = _userService.GetAllUser();
+            return Ok(result);
+        }
+
+        [HttpPut("BanAccount/{userId}")]
+        public IActionResult BanAcount(int userId)
+        {
+
+            bool result = _userService.BanAccount(userId);
+            if (result)
+            {
+                return Ok("Update success");
+            }
+            else
+            {
+                return NotFound("User not found");
+            }
         }
     }
 }

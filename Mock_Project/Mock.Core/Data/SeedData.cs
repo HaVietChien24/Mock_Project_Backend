@@ -41,7 +41,7 @@ namespace Mock.Core.Data
                     LastName = "Johnson",
                     ImageUrl = null,
                     Email = "jessica@gmail.com",
-                    Phone = null,
+                    Phone = "09022254566",
                     Username = "jessica_johnson",
                     Password = "$2a$12$PWrcJdxqn2qbniRRBOOFVOhpx925EOLuMJmEX1ZfOhsU0znIClGOu", // Ncs@14082011
                     IsActive = true,
