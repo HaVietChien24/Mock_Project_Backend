@@ -46,6 +46,7 @@ namespace Mock.Core.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
+
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PublishedYear")
