@@ -1,11 +1,4 @@
-﻿using Mock.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Mock.Bussiness.DTO
+﻿namespace Mock.Bussiness.DTO
 {
     public class BookDTO
     {
@@ -20,5 +13,6 @@ namespace Mock.Bussiness.DTO
         public virtual List<string>? GenreNames { get; set; } = new List<string>();
 
         public int Amount { get; set; }
+        public string? ImageUrl { get; set; }
     }
 }

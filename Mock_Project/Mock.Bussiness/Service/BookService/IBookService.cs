@@ -13,5 +13,8 @@ namespace Mock.Bussiness.Service.BookService
     {
         List<BookDTO> GetAllDTO();
         BookDTO GetDTOById(int id);
+        List<BookDTO> GetBookDTOByGenreId(int id);
+        List<BookDTO> SearchByTitleOrAuthor(string search);
+
     }
 }

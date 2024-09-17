@@ -17,6 +17,20 @@ namespace Mock.Repository.Repositories.Repository.Classes
             _entity = _context.Set<Book>();
         }
 
+        public List<Book> GetByGenreId(int id)
+        {
+            return _entity.Where(x => x.BookGenres.Any(bg => bg.GenreId == id))
+                .Include(x => x.BookGenres).ThenInclude(bg => bg.Genre).ToList();
+        }
 
+        public List<Book> SearchByTitleOrAuthor(string search)
+        {
+            return _entity.Where(x =>
+                (x.Title.ToLower().Contains(search.ToLower()))
+                || (x.Author.ToLower().Contains(search.ToLower())))
+                .Include(x => x.BookGenres)
+                .ThenInclude(bg => bg.Genre)
+                .ToList();
+        }
     }
 }

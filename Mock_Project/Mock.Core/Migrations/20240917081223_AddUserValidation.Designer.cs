@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mock.Core.Data;
 
@@ -11,9 +12,11 @@ using Mock.Core.Data;
 namespace Mock.Core.Migrations
 {
     [DbContext(typeof(LivebraryContext))]
-    partial class LivebraryContextModelSnapshot : ModelSnapshot
+    [Migration("20240917081223_AddUserValidation")]
+    partial class AddUserValidation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -98,9 +101,6 @@ namespace Mock.Core.Migrations
 
                     b.Property<DateTime?>("ExpectedReturnDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("IsBookPickedUp")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("PenaltyFine")
                         .HasColumnType("decimal(18,2)");

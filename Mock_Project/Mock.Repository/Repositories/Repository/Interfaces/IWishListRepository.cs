@@ -5,6 +5,6 @@ namespace Mock.Repository.Repositories.Repository.Interfaces
 {
     public interface IWishListRepository : IGenericRepository<WishList>
     {
-
+        WishList GetByUserId(int id);
     }
 }

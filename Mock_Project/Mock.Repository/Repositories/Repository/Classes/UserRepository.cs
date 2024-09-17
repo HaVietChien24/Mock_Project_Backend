@@ -29,6 +29,10 @@ namespace Mock.Repository.Repositories.Repository.Classes
         {
             return _context.Users.FirstOrDefault(x => x.Username == username);
         }
+        public List<User> GetAllUsers()
+        {
+            return _context.Users.ToList();
+        }
 
         public string HashPassword(string passwordToHash)
         {
@@ -48,8 +52,8 @@ namespace Mock.Repository.Repositories.Repository.Classes
                 new Claim("lastName", user.LastName),
                 new Claim("username", user.Username), 
                 new Claim("imageURL", user.ImageUrl ?? ""),
-                new Claim("email", user.Email),
-                new Claim("phone", user.Phone),
+                new Claim("email", user.Email ?? ""),
+                new Claim("phone", user.Phone ?? ""),
                 new Claim("isAdmin", user.IsAdmin.ToString()),
             };
 
@@ -68,6 +72,19 @@ namespace Mock.Repository.Repositories.Repository.Classes
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return tokenHandler.WriteToken(token);
+        }
+
+        public bool BanAccounts(int userId)
+        {
+            var personalInfor =  _context.Users.Find(userId);
+            if (personalInfor == null)
+            {
+                return false; // Người dùng không tồn tại
+            }
+            personalInfor.IsActive = !personalInfor.IsActive;
+            _context.Update(personalInfor);
+            _context.SaveChanges();
+            return true;
         }
     }
 }

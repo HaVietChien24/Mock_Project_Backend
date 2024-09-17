@@ -14,5 +14,6 @@ namespace Mock.Core.Models
         public virtual List<BookGenre>? BookGenres { get; set; } = new List<BookGenre>();
 
         public int Amount { get; set; }
+        public string? ImageUrl { get; set; }
     }
 }
