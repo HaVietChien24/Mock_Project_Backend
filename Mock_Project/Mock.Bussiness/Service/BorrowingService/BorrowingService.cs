@@ -14,6 +14,7 @@ namespace Mock.Bussiness.Service.BorrowingService
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
+
         public PageList<BorrowingDTO> GetAllBorrowing(int page, int pageSize, string? userName, string? borrowStatus)
         {
             var query = _unitOfWork.BorrowingRepository.GetAllBorrowings().AsQueryable();
@@ -31,6 +32,8 @@ namespace Mock.Bussiness.Service.BorrowingService
             var result = PageList<BorrowingDTO>.CreatePage(borrowingDTO, page, pageSize);
             return result;
         }
+
+
         public string UpdateReturnedBook(int borrowingDetailId, int numberBookReturned)
         {
            

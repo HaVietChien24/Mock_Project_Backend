@@ -11,6 +11,7 @@ namespace Mock.Bussiness.DTO
                 .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username)).ReverseMap();
 
             CreateMap<RegisterDTO, User>();
+            CreateMap<User, UserDTO>();
         }
     }
 }

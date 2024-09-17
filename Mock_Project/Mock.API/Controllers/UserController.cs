@@ -11,6 +11,7 @@ namespace Mock.API.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
         public UserController(IUserService userService, IMapper mapper)
@@ -91,6 +92,29 @@ namespace Mock.API.Controllers
             else
             {
                 return BadRequest("Register User Failed");
+            }
+        }
+
+        [HttpGet("GetAllUser")]
+        public IActionResult GetAllUser()
+        {
+
+            var result = _userService.GetAllUser();
+            return Ok(result);
+        }
+
+        [HttpPut("BanAccount/{userId}")]
+        public IActionResult BanAcount(int userId)
+        {
+
+            bool result = _userService.BanAccount(userId);
+            if (result)
+            {
+                return Ok("Update success");
+            }
+            else
+            {
+                return NotFound("User not found");
             }
         }
     }
