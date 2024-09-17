@@ -31,7 +31,11 @@ namespace Mock.Repository.Repositories.Generic
 
             if (string.IsNullOrEmpty(includeProperties) == false)
             {
-                list = list.Include(includeProperties);
+                foreach (var props in includeProperties.Split(new char[] { ',' },
+                    StringSplitOptions.RemoveEmptyEntries))
+                {
+                    list = list.Include(props);
+                }
             }
 
             var item = list.FirstOrDefault(item => EF.Property<int>(item, "Id") == id);
@@ -45,7 +49,11 @@ namespace Mock.Repository.Repositories.Generic
 
             if (string.IsNullOrEmpty(includeProperties) == false)
             {
-                list = list.Include(includeProperties);
+                foreach (var props in includeProperties.Split(new char[] { ',' },
+                    StringSplitOptions.RemoveEmptyEntries))
+                {
+                    list = list.Include(props);
+                }
             }
 
             IList<T> result = list.ToList();

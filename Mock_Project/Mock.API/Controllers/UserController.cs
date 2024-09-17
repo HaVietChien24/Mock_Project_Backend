@@ -23,76 +23,106 @@ namespace Mock.API.Controllers
 
         [HttpPost("login")]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(LoginDTO loginDTO) 
+        public IActionResult Login(LoginDTO loginDTO) 
         {
-            User userFromDb = _userService.GetByUsername(loginDTO.Username);
-
-            if (userFromDb == null)
+            try
             {
-                return NotFound("User not found");
-            }
+                User userFromDb = _userService.GetByUsername(loginDTO.Username);
 
-            if (_userService.CheckPasswordCorrect(loginDTO.Password, userFromDb.Password!) == false)
+                if (userFromDb == null)
+                {
+                    return BadRequest(new AuthResultDTO(null, "Incorrect credentials"));
+                }
+
+                bool isPasswordCorrect = _userService.CheckPasswordCorrect(loginDTO.Password, userFromDb.Password!);
+
+                if (isPasswordCorrect == false)
+                {
+                    return BadRequest(new AuthResultDTO(null, "Incorrect credentials"));
+                }
+
+                if (userFromDb.IsActive == false)
+                {
+                    return BadRequest(new AuthResultDTO(null, "Sorry but this account is currently being locked"));
+                }
+
+                string token = _userService.CreateToken(userFromDb);
+
+                return Ok(new AuthResultDTO(token, null));
+            }
+            catch (Exception ex) 
             {
-                return BadRequest("Incorrect Password");
+                return BadRequest(new AuthResultDTO(null, ex.Message));
             }
-
-            if (userFromDb.IsActive == false)
-            {
-                return BadRequest("Sorry but this account is currently being locked");
-            }
-
-            string token = _userService.CreateToken(userFromDb);
-            
-            return Ok(new AuthResultDTO(token));
         }
 
 
         [HttpPost("register")]
         [AllowAnonymous]
-        public async Task<IActionResult> Register(RegisterDTO registerDTO)
+        public IActionResult Register(RegisterDTO registerDTO)
         {
-            User userFromDb = _userService.GetByUsername(registerDTO.Username);
-
-            if (_userService.GetByUsername(registerDTO.Username) != null)
+            try
             {
-                return BadRequest("Username already exists");
+                User userFromDb = _userService.GetByUsername(registerDTO.Username);
+
+                if (_userService.GetByUsername(registerDTO.Username) != null)
+                {
+                    return BadRequest("Username already exists");
+                }
+
+                if (_userService.GetAll().Any(x => x.Email == registerDTO.Email) == true)
+                {
+                    return BadRequest("Email already exists");
+                }
+
+                if (_userService.GetAll().Any(x => x.Phone == registerDTO.Phone) == true)
+                {
+                    return BadRequest("Phone Number already exists");
+                }
+
+                if (registerDTO.Password != registerDTO.ConfirmPassword)
+                {
+                    return BadRequest("Password and confirm password must match");
+                }
+
+                var newUser = new User();
+
+                _mapper.Map(registerDTO, newUser);
+                newUser.Password = _userService.HashPassword(newUser.Password);
+                newUser.IsActive = true;
+                newUser.IsAdmin = false;
+
+                int result = _userService.Add(newUser);
+
+                string token = _userService.CreateToken(newUser);
+
+                if (result > 0)
+                {
+                    return Ok(new AuthResultDTO(token, null));
+                }
+                else
+                {
+                    return BadRequest(new AuthResultDTO(null, "Register User Failed"));
+                }
+            }
+            catch (Exception ex) 
+            {
+                return BadRequest(new AuthResultDTO(null, ex.Message));
+            }
+        }
+
+
+        [HttpGet("{id}")]
+        public IActionResult GetCurrentUser(int id)
+        {
+            User userFromDb = _userService.GetByID(id);
+
+            if (userFromDb == null)
+            {
+                return NotFound();
             }
 
-            if (_userService.GetAll().Any(x => x.Email == registerDTO.Email) == true)
-            {
-                return BadRequest("Email already exists");
-            }
-
-            if (_userService.GetAll().Any(x => x.Phone == registerDTO.Phone) == true)
-            {
-                return BadRequest("Phone Number already exists");
-            }
-
-            if (registerDTO.Password != registerDTO.ConfirmPassword)
-            {
-                return BadRequest("Password and confirm password must match");
-            }
-
-            var newUser = new User();
-
-            _mapper.Map(registerDTO, newUser);
-            newUser.Password = _userService.HashPassword(newUser.Password);
-            newUser.IsActive = true;
-            newUser.IsAdmin = false;
-
-            int result = _userService.Add(newUser);
-
-            string token = _userService.CreateToken(newUser);
-
-            if (result > 0)
-            {
-                return Ok(new AuthResultDTO(token)); 
-            }
-            else
-            {
-                return BadRequest("Register User Failed");
-            }
+            return Ok(userFromDb);
         }
 
         [HttpGet("GetAllUser")]

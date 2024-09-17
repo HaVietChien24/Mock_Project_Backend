@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure;
 using Mock.Bussiness.DTO;
 using Mock.Core.Models;
 using Mock.Repository.UnitOfWork;
@@ -33,6 +34,13 @@ namespace Mock.Bussiness.Service.BorrowingService
             return result;
         }
 
+        public PageList<BorrowingDetailDTO> GetAllBorrowingDetail(int borrowingId, int page, int pageSize)
+        {
+           var query= _unitOfWork.BorrowingRepository.GetBorrowingDetails(borrowingId);
+            var borrowingDetailDTO = _mapper.Map<List<BorrowingDetailDTO>>(query);
+            var result = PageList<BorrowingDetailDTO>.CreatePage(borrowingDetailDTO, page, pageSize);
+            return result;
+        }
 
         public string UpdateReturnedBook(int borrowingDetailId, int numberBookReturned)
         {
