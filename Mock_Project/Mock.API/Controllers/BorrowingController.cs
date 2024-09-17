@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Mock.Bussiness.RequestBody;
 using Mock.Bussiness.Service.BorrowingService;
 using System.Runtime.InteropServices;
 
@@ -21,15 +22,18 @@ namespace Mock.API.Controllers
             return Ok(result);
         }
         [HttpPut]
-        public IActionResult UpdateReturnedBook(int borrowingDetailId, int numberBookReturned)
+        public IActionResult UpdateReturnedBook(ReturnedBook returnbooked)
         {
-            var result = _service.UpdateReturnedBook(borrowingDetailId, numberBookReturned);
-            if (result == "Cập nhật số lượng sách trả thành công." || result == "Đã trả xong tất cả sách.")
+            var result = _service.UpdateReturnedBook(returnbooked.borrowingDetailId, returnbooked.numberBookReturned);
+
+            if (result.Success) 
             {
-                return Ok(result);
+                return Ok(result); 
             }
-            return BadRequest(result);
+
+            return BadRequest(result); 
         }
+
         [HttpGet]
         public IActionResult GetBorrowingDetail(int borrowingId, int page = 1, int pageSize = 5)
         {

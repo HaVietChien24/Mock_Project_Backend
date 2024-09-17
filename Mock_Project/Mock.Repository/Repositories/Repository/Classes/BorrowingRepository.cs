@@ -16,17 +16,45 @@ namespace Mock.Repository.Repositories.Repository.Classes
 
         public string CheckBorrowingStatus(int borrowingId)
         {
-            throw new NotImplementedException();
+            var borrowing = _context.Borrowings
+                           .Include(c => c.BorrowingDetails)
+                           .Where(c => c.Id == borrowingId)
+                           .Select(c => new
+                           {
+                             BorrowingId = c.Id,
+                            Status = c.BorrowingDetails.All(d => d.Status != "Not Returned") ? "Returned" : "Not Returned",
+                            ExpectedReturnDate=c.ExpectedReturnDate,
+                           }).FirstOrDefault();
+           
+            return borrowing.Status;
         }
-
+        public int CheckPenalty(int borrowingId) {
+            int penalty = 0;
+            var borrowing = _context.Borrowings
+                          .Include(c => c.BorrowingDetails)
+                          .Where(c => c.Id == borrowingId)
+                          .Select(c => new
+                          {
+                              BorrowingId = c.Id,
+                              Status = c.BorrowingDetails.All(d => d.Status != "Not Returned") ? "Returned" : "Not Returned",
+                              ExpectedReturnDate = c.ExpectedReturnDate,
+                          }).FirstOrDefault();
+            if (borrowing.Status == "Not Returned" && borrowing.ExpectedReturnDate <= DateTime.UtcNow)
+            {
+                var overdueDays = (DateTime.UtcNow - borrowing.ExpectedReturnDate).Value.Days;
+                penalty = overdueDays * 5000;
+            }
+            return penalty;
+        }
+       
         public List<Borrowing> GetAllBorrowings()
         {
-            return _context.Borrowings.Include(c=>c.User).ToList();
+            return _context.Borrowings.Include(c => c.User).Where(c=>c.RequestStatus== "Accept").ToList();
         }
 
         public List<BorrowingDetails> GetBorrowingDetails(int borrowingId)
         {
-            var borrowingDetail= _context.BorrowingDetails.Include(c=>c.Book).ToList();
+            var borrowingDetail = _context.BorrowingDetails.Include(c => c.Book).Where(c => c.BorrowingId == borrowingId).ToList();
 
             return borrowingDetail;
         }

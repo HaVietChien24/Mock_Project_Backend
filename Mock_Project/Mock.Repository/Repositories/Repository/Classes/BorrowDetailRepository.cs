@@ -1,5 +1,6 @@
 ﻿using Mock.Core.Data;
 using Mock.Core.Models;
+using Mock.Repository.ApiResult;
 using Mock.Repository.Repositories.Generic;
 using Mock.Repository.Repositories.Repository.Interfaces;
 
@@ -13,31 +14,40 @@ namespace Mock.Repository.Repositories.Repository.Classes
             _context = context;
         }
 
-        public string UpdateReturnedBook(int borrowingDetailId, int numberBookReturned)
+        public APIResult<string> UpdateReturnedBook(int borrowingDetailId, int numberBookReturned)
         {
             var borrowingDetail = _context.BorrowingDetails.FirstOrDefault(c => c.Id == borrowingDetailId);
             if (borrowingDetail == null)
             {
-                return "Không tìm thấy chi tiết mượn sách.";
+                return APIResult<string>.FailureResult("Không tìm thấy chi tiết mượn sách.");
             }
-           
+            if (numberBookReturned < 0)
+            {
+                return APIResult<string>.FailureResult("Số sách trả về phải lớn hơn 0.");
+            }
             if (borrowingDetail.Quantity < numberBookReturned)
             {
-                return "Số lượng sách trả về không phù hợp.";
+                return APIResult<string>.FailureResult("Số lượng sách trả về không phù hợp.");
             }
-          
-            borrowingDetail.NumberReturnedBook += numberBookReturned;
 
-            borrowingDetail.Quantity -= numberBookReturned;
-
-            _context.SaveChanges();
+            borrowingDetail.NumberReturnedBook = numberBookReturned;
 
             if (borrowingDetail.NumberReturnedBook == borrowingDetail.Quantity)
             {
-                return "Đã trả xong tất cả sách.";
+                borrowingDetail.Status = "Returned";
+                borrowingDetail.ActualReturnDate = DateTime.Now;
+                return APIResult<string>.SuccessResult("Đã trả xong tất cả sách.");
             }
+            if (borrowingDetail.NumberReturnedBook < borrowingDetail.Quantity)
+            {
+                borrowingDetail.Status = "Not Returned";
+                borrowingDetail.ActualReturnDate = DateTime.Now;
+                return APIResult<string>.SuccessResult("Đã trả sách.");
+            }
+            var borrowing = _context.Borrowings.FirstOrDefault(c=>c.Id == borrowingDetail.BorrowingId).BorrowingDetails.ToList();
 
-            return "Cập nhật số lượng sách trả thành công.";
+            return APIResult<string>.SuccessResult("Cập nhật số lượng sách trả thành công.");
         }
+
     }
 }
