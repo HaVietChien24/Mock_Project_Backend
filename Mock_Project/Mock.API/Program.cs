@@ -3,6 +3,7 @@ using Mock.Bussiness.DTO;
 using Mock.Bussiness.Service.BookService;
 using Mock.Bussiness.Service.GenreService;
 using Mock.Bussiness.Service.UserService;
+using Mock.Bussiness.Service.WishListService;
 using Mock.Core.Data;
 using Mock.Repository.UnitOfWork;
 using System.Text.Json.Serialization;
@@ -29,6 +30,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IGenreService, GenreService>();
 builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<IWishListService, WishListService>();
 
 
 builder.Services.AddDbContext<LivebraryContext>(option =>
