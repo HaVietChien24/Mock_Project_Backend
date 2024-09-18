@@ -1,4 +1,6 @@
-﻿namespace Mock.Bussiness.DTO
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Mock.Bussiness.DTO
 {
     public class RegisterDTO
     {

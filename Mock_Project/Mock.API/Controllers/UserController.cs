@@ -63,26 +63,29 @@ namespace Mock.API.Controllers
         {
             try
             {
-                User userFromDb = _userService.GetByUsername(registerDTO.Username);
-
                 if (_userService.GetByUsername(registerDTO.Username) != null)
                 {
-                    return BadRequest("Username already exists");
+                    return BadRequest(new AuthResultDTO(null, "Username already exists"));
                 }
 
-                if (_userService.GetAll().Any(x => x.Email == registerDTO.Email) == true)
+                if (_userService.GetAll().Any(x => x.Email == registerDTO.Email) == true && registerDTO.Email != "")
                 {
-                    return BadRequest("Email already exists");
+                    return BadRequest(new AuthResultDTO(null, "Email already exists"));
                 }
 
-                if (_userService.GetAll().Any(x => x.Phone == registerDTO.Phone) == true)
+                if (_userService.GetAll().Any(x => x.Phone == registerDTO.Phone) == true && registerDTO.Phone != "")
                 {
-                    return BadRequest("Phone Number already exists");
+                    return BadRequest(new AuthResultDTO(null, "Phone Number already exists"));
                 }
 
                 if (registerDTO.Password != registerDTO.ConfirmPassword)
                 {
-                    return BadRequest("Password and confirm password must match");
+                    return BadRequest(new AuthResultDTO(null, "Password and confirm password must match"));
+                }
+
+                if (registerDTO.Email == "" && registerDTO.Phone == "")
+                {
+                    return BadRequest(new AuthResultDTO(null, "You need to at least enter either you email or phone number"));
                 }
 
                 var newUser = new User();
@@ -94,11 +97,9 @@ namespace Mock.API.Controllers
 
                 int result = _userService.Add(newUser);
 
-                string token = _userService.CreateToken(newUser);
-
                 if (result > 0)
                 {
-                    return Ok(new AuthResultDTO(token, null));
+                    return Ok(new AuthResultDTO(null, null));
                 }
                 else
                 {
@@ -112,10 +113,65 @@ namespace Mock.API.Controllers
         }
 
 
+        [HttpPut("updateProfile")]
+        [AllowAnonymous]
+        public IActionResult UpdateProfile(UpdateProfileDTO updateProfileDTO)
+        {
+            try
+            {
+                User userToUpdate = _userService.GetByUsername(updateProfileDTO.Username);
+
+                if (userToUpdate == null)
+                {
+                    return BadRequest(new AuthResultDTO(null, "Username doesn't exists"));
+                }
+
+                if (_userService.GetAll().Any(x => x.Email == updateProfileDTO.Email)
+                    && updateProfileDTO.Email != userToUpdate.Email
+                    && updateProfileDTO.Email != "")
+                {
+                    return BadRequest(new AuthResultDTO(null, "Email already exists"));
+                }
+
+                if (_userService.GetAll().Any(x => x.Phone == updateProfileDTO.Phone)
+                    && updateProfileDTO.Phone != userToUpdate.Phone
+                    && updateProfileDTO.Phone != "")
+                {
+                    return BadRequest(new AuthResultDTO(null, "Phone Number already exists"));
+                }
+
+                if (updateProfileDTO.Email == "" && updateProfileDTO.Phone == "")
+                {
+                    return BadRequest(new AuthResultDTO(null, "You need to at least enter either you email or phone number"));
+                }
+
+                _mapper.Map(updateProfileDTO, userToUpdate);
+
+                int result = _userService.Update(userToUpdate);
+
+                string token = _userService.CreateToken(userToUpdate);
+
+                if (result > 0)
+                {
+                    return Ok(new AuthResultDTO(token, "Update Profile Successfully"));
+                }
+                else
+                {
+                    return BadRequest(new AuthResultDTO(null, "Register User Failed"));
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new AuthResultDTO(null, ex.Message));
+            }
+        }
+
+
         [HttpGet("{id}")]
         public IActionResult GetCurrentUser(int id)
         {
-            User userFromDb = _userService.GetByID(id);
+            User userFromDb = _userService.GetByID(id, "Borrowings");
 
             if (userFromDb == null)
             {
@@ -128,7 +184,6 @@ namespace Mock.API.Controllers
         [HttpGet("GetAllUser")]
         public IActionResult GetAllUser()
         {
-
             var result = _userService.GetAllUser();
             return Ok(result);
         }
@@ -136,7 +191,6 @@ namespace Mock.API.Controllers
         [HttpPut("BanAccount/{userId}")]
         public IActionResult BanAcount(int userId)
         {
-
             bool result = _userService.BanAccount(userId);
             if (result)
             {

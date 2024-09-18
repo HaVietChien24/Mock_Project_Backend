@@ -21,14 +21,22 @@ namespace Mock.Repository.Repositories.Repository.Classes
 
         public List<Borrowing> GetAllBorrowings()
         {
-            return _context.Borrowings.Include(c=>c.User).ToList();
+            return _context.Borrowings.Include(c => c.User).ToList();
         }
 
         public List<BorrowingDetails> GetBorrowingDetails(int borrowingId)
         {
-            var borrowingDetail= _context.BorrowingDetails.Include(c=>c.Book).ToList();
+            var borrowingDetail = _context.BorrowingDetails.Include(c => c.Book).ToList();
 
             return borrowingDetail;
+        }
+
+        public List<Borrowing> GetAllRequestsByUserId(int id)
+        {
+            var requests = _context.Borrowings.Include(x => x.BorrowingDetails)
+                .ThenInclude(bd => bd.Book).Where(x => x.RequestStatus.ToLower() == "pending")
+                .ToList();
+            return requests;
         }
     }
 }
