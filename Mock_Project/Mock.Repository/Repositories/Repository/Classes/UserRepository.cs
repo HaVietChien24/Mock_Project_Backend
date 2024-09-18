@@ -29,10 +29,6 @@ namespace Mock.Repository.Repositories.Repository.Classes
         {
             return _context.Users.FirstOrDefault(x => x.Username == username);
         }
-        public List<User> GetAllUsers()
-        {
-            return _context.Users.ToList();
-        }
 
         public string HashPassword(string passwordToHash)
         {

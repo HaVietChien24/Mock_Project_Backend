@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Mock.Bussiness.DTO;
 using Mock.Bussiness.Service.WishListService;
 
 namespace Mock.API.Controllers
@@ -24,6 +25,20 @@ namespace Mock.API.Controllers
                     return Ok("Không có dữ liệu");
                 }
                 return Ok(item);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Có lỗi xảy ra");
+            }
+        }
+
+        [HttpPost("add-book-to-wish-list")]
+        public IActionResult AddBookToWishlist([FromBody] AddWishListDTO dto)
+        {
+            try
+            {
+                var result = _wishListService.AddBookToWishlist(dto.userId, dto.bookId);
+                return Ok(result);
             }
             catch (Exception)
             {

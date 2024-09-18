@@ -54,6 +54,7 @@ namespace Mock.Repository.Repositories.Repository.Classes
         }
         public List<Borrowing> GetAllBorrowings()
         {
+
             var borrowing= _context.Borrowings.Include(c => c.User).Where(c => c.RequestStatus == "Accept").ToList();
             foreach (var item in borrowing )
             {
@@ -75,19 +76,35 @@ namespace Mock.Repository.Repositories.Repository.Classes
             }
             _context.SaveChanges();
             return borrowing;
+
+            return _context.Borrowings.Include(c => c.User).ToList();
+
         }
 
         public List<BorrowingDetails> GetBorrowingDetails(int borrowingId)
         {
+
             var borrowingDetail = _context.BorrowingDetails.Include(c => c.Book).Where(c => c.BorrowingId == borrowingId).ToList();
+
+            var borrowingDetail = _context.BorrowingDetails.Include(c => c.Book).ToList();
+
 
             return borrowingDetail;
         }
+
 
         public void UpdatePickup(int borrowingId)
         {
            var borrowingPickup=_context.Borrowings.FirstOrDefault(c=>c.Id== borrowingId);
             borrowingPickup.IsBookPickedUp = true;
+
+        public List<Borrowing> GetAllRequestsByUserId(int id)
+        {
+            var requests = _context.Borrowings.Include(x => x.BorrowingDetails)
+                .ThenInclude(bd => bd.Book).Where(x => x.RequestStatus.ToLower() == "pending")
+                .ToList();
+            return requests;
+
         }
     }
 }
