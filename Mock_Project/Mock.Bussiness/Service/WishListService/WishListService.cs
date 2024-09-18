@@ -22,5 +22,36 @@ namespace Mock.Bussiness.Service.WishListService
             var item = _unitOfWork.WishListRepository.GetByUserId(id);
             return _mapper.Map<WishlistDTO>(item);
         }
+
+        public int AddBookToWishlist(int userId, int bookId)
+        {
+            var wishlist = _unitOfWork.WishListRepository.GetByUserId(userId);
+            if (wishlist == null)
+            {
+                var newWishlist = new WishList() { UserId = userId };
+                _unitOfWork.WishListRepository.Add(newWishlist);
+                _unitOfWork.SaveChanges();
+                wishlist = _unitOfWork.WishListRepository.GetByUserId(userId);
+
+                var wishListDetail = new WishListDetails() { WishListId = wishlist.Id, BookId = bookId, Quantity = 1 };
+                _unitOfWork.WishListDetailRepository.Add(wishListDetail);
+            }
+            else
+            {
+                var findDetails = wishlist.WishListDetails.Find(x => x.BookId == bookId);
+                if (findDetails == null)
+                {
+                    var wishListDetail = new WishListDetails() { WishListId = wishlist.Id, BookId = bookId, Quantity = 1 };
+                    _unitOfWork.WishListDetailRepository.Add(wishListDetail);
+                }
+                else
+                {
+                    findDetails.Quantity += 1;
+                    _unitOfWork.WishListDetailRepository.Update(findDetails);
+                }
+            }
+            return _unitOfWork.SaveChanges();
+        }
+
     }
 }

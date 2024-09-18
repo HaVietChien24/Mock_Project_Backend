@@ -6,6 +6,7 @@ namespace Mock.Bussiness.Service.WishListService
 {
     public interface IWishListService : IBaseService<WishList>
     {
+        int AddBookToWishlist(int userId, int bookId);
         WishlistDTO GetDTOByUserId(int id);
     }
 }

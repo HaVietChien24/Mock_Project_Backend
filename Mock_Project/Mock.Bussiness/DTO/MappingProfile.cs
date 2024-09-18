@@ -21,7 +21,8 @@ namespace Mock.Bussiness.DTO
             CreateMap<Book, BookDTO>().ForMember(dest => dest.GenreNames, opt => opt.MapFrom(src => src.BookGenres.Select(bg => bg.Genre.Name).ToList())).ReverseMap();
             CreateMap<User, UserDTO>();
             CreateMap<WishList, WishlistDTO>().ReverseMap();
-            CreateMap<WishListDetails, WishListDetailsDTO>().ForMember(dest => dest.BookTitle, opt => opt.MapFrom(src => src.Book.Title)).ReverseMap();
+            CreateMap<WishListDetails, WishListDetailsDTO>().ForMember(dest => dest.BookTitle, opt => opt.MapFrom(src => src.Book.Title))
+                .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.Book.ImageUrl)).ReverseMap();
         }
     }
 }
