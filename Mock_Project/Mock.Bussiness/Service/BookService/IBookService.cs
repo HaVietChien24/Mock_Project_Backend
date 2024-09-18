@@ -16,5 +16,10 @@ namespace Mock.Bussiness.Service.BookService
         List<BookDTO> GetBookDTOByGenreId(int id);
         List<BookDTO> SearchByTitleOrAuthor(string search);
 
+       
+        // Sửa kiểu trả về thành Task<AddBookRequestDTO>
+        Task<AddBookRequestDTO> AddBookAsync(AddBookRequestDTO request);
+        Task<UpdateBookRequestDTO> UpdateBookAsync(UpdateBookRequestDTO request);
+
     }
 }
