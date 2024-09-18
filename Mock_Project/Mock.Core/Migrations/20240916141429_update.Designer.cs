@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mock.Core.Data;
 
@@ -11,9 +12,11 @@ using Mock.Core.Data;
 namespace Mock.Core.Migrations
 {
     [DbContext(typeof(LivebraryContext))]
-    partial class LivebraryContextModelSnapshot : ModelSnapshot
+    [Migration("20240916141429_update")]
+    partial class update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,9 +46,6 @@ namespace Mock.Core.Migrations
 
                     b.Property<string>("ISBN")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PublishedYear")
@@ -98,15 +98,6 @@ namespace Mock.Core.Migrations
 
                     b.Property<DateTime?>("ExpectedReturnDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool?>("IsBookPickedUp")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("IsPickUpLate")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("IsRestocked")
-                        .HasColumnType("bit");
 
                     b.Property<decimal?>("PenaltyFine")
                         .HasColumnType("decimal(18,2)");
@@ -198,8 +189,7 @@ namespace Mock.Core.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
@@ -212,8 +202,7 @@ namespace Mock.Core.Migrations
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -224,8 +213,7 @@ namespace Mock.Core.Migrations
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -265,7 +253,6 @@ namespace Mock.Core.Migrations
                             IsAdmin = true,
                             LastName = "Johnson",
                             Password = "$2a$12$PWrcJdxqn2qbniRRBOOFVOhpx925EOLuMJmEX1ZfOhsU0znIClGOu",
-                            Phone = "09022254566",
                             Username = "jessica_johnson"
                         });
                 });

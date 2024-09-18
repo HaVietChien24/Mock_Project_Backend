@@ -1,4 +1,6 @@
-﻿namespace Mock.Core.Models
+﻿using System.Diagnostics;
+
+namespace Mock.Core.Models
 {
     public class Borrowing
     {
@@ -12,7 +14,10 @@
         public int? TotalQuantity { get; set; }
         public string? RequestStatus { get; set; }
         public string? BorrowingStatus { get; set; } // đã trả, chưa trả, chưa trả đủ - vừa contain đã trả và chưa trả đủ
+        public bool? IsBookPickedUp { get; set; }
+        public bool? IsPickUpLate {  get; set; }
         public decimal? PenaltyFine { get; set; } = 0;
+        public bool? IsRestocked { get; set; }
         public virtual List<BorrowingDetails> BorrowingDetails { get; set; } = new List<BorrowingDetails>();
 
     }
