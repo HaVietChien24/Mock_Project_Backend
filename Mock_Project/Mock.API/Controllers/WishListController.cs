@@ -37,7 +37,21 @@ namespace Mock.API.Controllers
         {
             try
             {
-                var result = _wishListService.AddBookToWishlist(dto.userId, dto.bookId);
+                var result = _wishListService.AddBookToWishlist(dto.UserId, dto.BookId);
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Có lỗi xảy ra");
+            }
+        }
+
+        [HttpPut("update-wishlist-detail-quantity")]
+        public IActionResult UpdateDetailQuantity([FromBody] UpdateWishlistDetailDTO dto)
+        {
+            try
+            {
+                var result = _wishListService.UpdateDetailQuantity(dto.DetailsId, dto.Quantity);
                 return Ok(result);
             }
             catch (Exception)

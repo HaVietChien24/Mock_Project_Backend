@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Mock.Bussiness.DTO;
 using Mock.Bussiness.Service.BookService;
+using Mock.Bussiness.Service.BorrowingService;
 using Mock.Bussiness.Service.GenreService;
+using Mock.Bussiness.Service.RequestService;
 using Mock.Bussiness.Service.UserService;
 using Mock.Bussiness.Service.WishListService;
 using Mock.Core.Data;
@@ -38,9 +40,9 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen();   
 
-//builder.Services.AddScoped<IBorrowingService, Borrowing>();
+builder.Services.AddScoped<IBorrowingService, BorrowingService>();
 
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -49,6 +51,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IGenreService, GenreService>();
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IWishListService, WishListService>();
+builder.Services.AddScoped<IRequestService, RequestService>();
 
 
 builder.Services.AddDbContext<LivebraryContext>(option =>

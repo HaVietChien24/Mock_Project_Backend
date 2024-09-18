@@ -8,5 +8,6 @@ namespace Mock.Bussiness.Service.WishListService
     {
         int AddBookToWishlist(int userId, int bookId);
         WishlistDTO GetDTOByUserId(int id);
+        int UpdateDetailQuantity(int detailsId, int quantity);
     }
 }

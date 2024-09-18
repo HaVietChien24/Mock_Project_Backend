@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mock.API", "Mock.API\Mock.API.csproj", "{9FC4706E-E058-4FBA-BE19-0FD57E76C53E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mock.API", "Mock.API\Mock.API.csproj", "{9FC4706E-E058-4FBA-BE19-0FD57E76C53E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mock.Bussiness", "Mock.Bussiness\Mock.Bussiness.csproj", "{B98A4B74-B78E-4B16-85EC-9D441EECC0A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mock.Bussiness", "Mock.Bussiness\Mock.Bussiness.csproj", "{B98A4B74-B78E-4B16-85EC-9D441EECC0A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mock.Core", "Mock.Core\Mock.Core.csproj", "{070912C0-7479-4684-9CEF-319192823990}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mock.Core", "Mock.Core\Mock.Core.csproj", "{070912C0-7479-4684-9CEF-319192823990}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mock.Repository", "Mock.Repository\Mock.Repository.csproj", "{BD685D39-70F8-4C0F-AFB1-D225D76ACA66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mock.Repository", "Mock.Repository\Mock.Repository.csproj", "{BD685D39-70F8-4C0F-AFB1-D225D76ACA66}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

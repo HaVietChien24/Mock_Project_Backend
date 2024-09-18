@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Mock.Bussiness.DTO;
 using Mock.Bussiness.Service.BookService;
 
 namespace Mock.API.Controllers
@@ -66,5 +67,54 @@ namespace Mock.API.Controllers
                 return BadRequest("Có lỗi xảy ra");
             }
         }
+        [HttpPost("add-book")]
+        public async Task<IActionResult> AddBook([FromBody] AddBookRequestDTO request)
+        {
+            try
+            {
+                // Gọi service để thêm sách và nhận lại đối tượng sách sau khi thêm
+                var addedBook = await _bookService.AddBookAsync(request);
+
+                // Trả về đối tượng sách dưới dạng JSON
+                return Ok(addedBook);
+            }
+            catch (Exception ex)
+            {
+                // Trả về phản hồi lỗi dưới dạng JSON với thông tin chi tiết hơn
+                var errorResponse = new
+                {
+                    message = "Failed to add book",
+                    details = ex.Message
+                };
+                return BadRequest(errorResponse);
+            }
+        }
+
+        [HttpPost("update-book")]
+        public async Task<IActionResult> UpdateBook([FromBody] UpdateBookRequestDTO request)
+        {
+            try
+            {
+                // Gọi service để cập nhật sách và nhận lại đối tượng sách sau khi cập nhật
+                var updatedBook = await _bookService.UpdateBookAsync(request);
+
+                // Trả về đối tượng sách dưới dạng JSON
+                return Ok(updatedBook);
+            }
+            catch (Exception ex)
+            {
+                // Trả về phản hồi lỗi dưới dạng JSON với thông tin chi tiết hơn
+                var errorResponse = new
+                {
+                    message = "Failed to update book",
+                    details = ex.Message
+                };
+                return BadRequest(errorResponse);
+            }
+        }
+
+
+
+
     }
 }
