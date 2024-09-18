@@ -9,6 +9,6 @@ namespace Mock.Repository.Repositories.Repository.Interfaces
         public string CheckBorrowingStatus(int borrowingId);
 
         public List<BorrowingDetails> GetBorrowingDetails(int borrowingId);
-
+        List<Borrowing> GetAllRequestsByUserId(int id);
     }
 }

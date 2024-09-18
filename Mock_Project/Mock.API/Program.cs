@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Mock.Bussiness.DTO;
 using Mock.Bussiness.Service.BookService;
 using Mock.Bussiness.Service.GenreService;
+using Mock.Bussiness.Service.RequestService;
 using Mock.Bussiness.Service.UserService;
 using Mock.Bussiness.Service.WishListService;
 using Mock.Core.Data;
@@ -31,6 +32,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IGenreService, GenreService>();
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IWishListService, WishListService>();
+builder.Services.AddScoped<IRequestService, RequestService>();
 
 
 builder.Services.AddDbContext<LivebraryContext>(option =>
