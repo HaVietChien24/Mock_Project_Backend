@@ -39,6 +39,7 @@ namespace Mock.Bussiness.DTO
                 .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.Book.ImageUrl));
             CreateMap<Borrowing, RequestDTO>().ForMember(dest => dest.RequestDetails, opt => opt.MapFrom(src => src.BorrowingDetails))
                 .ForMember(dest => dest.TotalQuantity, opt => opt.MapFrom(src => src.BorrowingDetails.Sum(bd => bd.Quantity)));
+            CreateMap<WishListDetails, BorrowingDetails>();
         }
     }
 }

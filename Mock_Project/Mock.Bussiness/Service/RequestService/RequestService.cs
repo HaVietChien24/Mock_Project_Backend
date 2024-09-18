@@ -32,5 +32,37 @@ namespace Mock.Bussiness.Service.RequestService
             _unitOfWork.BorrowingRepository.Delete(request);
             return _unitOfWork.SaveChanges();
         }
+
+        public int CreateRequest(RequestDTO requestDTO)
+        {
+            requestDTO.RequestDate = DateTime.Now;
+            requestDTO.RequestStatus = "Pending";
+
+            var borrowing = _mapper.Map<Borrowing>(requestDTO);
+            _unitOfWork.BorrowingRepository.Add(borrowing);
+            _unitOfWork.SaveChanges();
+
+            var wishlist = _unitOfWork.WishListRepository.GetByUserId(requestDTO.UserId);
+            var wishlistDetails = wishlist.WishListDetails;
+
+            var borrowingDetails = _mapper.Map<List<BorrowingDetails>>(wishlistDetails);
+
+            foreach (var item in borrowingDetails)
+            {
+                item.Id = 0;
+                item.BorrowingId = borrowing.Id;
+                _unitOfWork.BorrowDetailRepository.Add(item);
+            }
+            _unitOfWork.SaveChanges();
+
+            foreach (var item in wishlistDetails)
+            {
+                _unitOfWork.WishListDetailRepository.Delete(item);
+            }
+            _unitOfWork.WishListRepository.Delete(wishlist);
+
+            return _unitOfWork.SaveChanges();
+
+        }
     }
 }
