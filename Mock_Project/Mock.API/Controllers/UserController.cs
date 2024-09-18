@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Mock.Bussiness.DTO;
 using Mock.Bussiness.Service.UserService;
 using Mock.Core.Models;
+using System.Security.Claims;
 
 namespace Mock.API.Controllers
 {
@@ -25,6 +26,12 @@ namespace Mock.API.Controllers
         [AllowAnonymous]
         public IActionResult Login(LoginDTO loginDTO) 
         {
+            if (Request.Headers.ContainsKey("Authorization"))
+            {
+                var authHeader = HttpContext.Request.Headers["Authorization"].ToString();
+                var token = authHeader;
+            }
+
             try
             {
                 User userFromDb = _userService.GetByUsername(loginDTO.Username);
@@ -65,7 +72,7 @@ namespace Mock.API.Controllers
             {
                 if (_userService.GetByUsername(registerDTO.Username) != null)
                 {
-                    return BadRequest(new AuthResultDTO(null, "Username already exists"));
+                    return BadRequest(new AuthResultDTO(null, "Account already exists"));
                 }
 
                 if (_userService.GetAll().Any(x => x.Email == registerDTO.Email) == true && registerDTO.Email != "")
@@ -123,7 +130,7 @@ namespace Mock.API.Controllers
 
                 if (userToUpdate == null)
                 {
-                    return BadRequest(new AuthResultDTO(null, "Username doesn't exists"));
+                    return BadRequest(new AuthResultDTO(null, "Account doesn't exists"));
                 }
 
                 if (_userService.GetAll().Any(x => x.Email == updateProfileDTO.Email)
@@ -158,6 +165,54 @@ namespace Mock.API.Controllers
                 else
                 {
                     return BadRequest(new AuthResultDTO(null, "Register User Failed"));
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new AuthResultDTO(null, ex.Message));
+            }
+        }
+
+
+        [HttpPut("changePassword")]
+        [AllowAnonymous]
+        public IActionResult ChangePassword(ChangePasswordDTO changePasswordDTO)
+        {
+            try
+            {
+                User userToUpdate = _userService.GetByID(Int32.Parse(changePasswordDTO.Id));
+
+                if (userToUpdate == null)
+                {
+                    return BadRequest(new AuthResultDTO(null, "Account doesn't exists"));
+                }
+
+                if (_userService.CheckPasswordCorrect(changePasswordDTO.OldPassword, userToUpdate.Password) == false)
+                {
+                    return BadRequest(new AuthResultDTO(null, "Incorrect Old Password"));
+                }
+
+                if (changePasswordDTO.OldPassword == changePasswordDTO.NewPassword)
+                {
+                    return BadRequest(new AuthResultDTO(null, "New password cannot be the same as old password"));
+                }
+
+                if (changePasswordDTO.ConfirmNewPassword != changePasswordDTO.NewPassword)
+                {
+                    return BadRequest(new AuthResultDTO(null, "Confirm password must match the new password"));
+                }
+
+                userToUpdate.Password = _userService.HashPassword(changePasswordDTO.NewPassword);
+                int result = _userService.Update(userToUpdate);
+
+                if (result > 0)
+                {
+                    return Ok(new AuthResultDTO(null, "Change Password Successfully"));
+                }
+                else
+                {
+                    return BadRequest(new AuthResultDTO(null, "Change Password Failed"));
                 }
 
             }
