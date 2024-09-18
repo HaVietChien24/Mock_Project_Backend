@@ -54,7 +54,7 @@ namespace Mock.Bussiness.Service.UserService
         public List<UserDTO> GetAllUser()
         {
 
-            var query = _unitOfWork.UserRepository.GetAllUsers().AsQueryable();
+            var query = _unitOfWork.UserRepository.GetAll().AsQueryable();
             List<UserDTO> userDTOList = _mapper.Map<List<UserDTO>>(query);
 
             return userDTOList;

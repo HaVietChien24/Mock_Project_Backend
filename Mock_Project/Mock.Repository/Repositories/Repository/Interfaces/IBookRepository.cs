@@ -7,6 +7,9 @@ namespace Mock.Repository.Repositories.Repository.Interfaces
     {
         List<Book> GetByGenreId(int id);
         List<Book> SearchByTitleOrAuthor(string search);
+        Task AddBook(Book book, List<string> genreNames);
+        Task UpdateBook(Book book, List<string> genreNames);
+
 
     }
 }
