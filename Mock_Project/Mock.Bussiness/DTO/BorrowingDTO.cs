@@ -20,6 +20,8 @@ namespace Mock.Bussiness.DTO
         public string? RequestStatus { get; set; }
         public string? BorrowingStatus { get; set; }
         public decimal? PenaltyFine { get; set; } = 0;
+        public string? IsBookPickedUp { get; set; }
+        public string? IsPickUpLate {  get; set; }
 
     }
 }

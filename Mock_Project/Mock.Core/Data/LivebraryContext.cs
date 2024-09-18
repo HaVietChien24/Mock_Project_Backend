@@ -20,7 +20,7 @@ namespace Mock.Core.Data
         public DbSet<WishList> WishLists { get; set; }
         public DbSet<WishListDetails> WishListDetails { get; set; }
 
-        public 
+         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

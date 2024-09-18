@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mock.Core.Data;
 
@@ -11,9 +12,11 @@ using Mock.Core.Data;
 namespace Mock.Core.Migrations
 {
     [DbContext(typeof(LivebraryContext))]
-    partial class LivebraryContextModelSnapshot : ModelSnapshot
+    [Migration("20240918092335_update-property-IsRestocked")]
+    partial class updatepropertyIsRestocked
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

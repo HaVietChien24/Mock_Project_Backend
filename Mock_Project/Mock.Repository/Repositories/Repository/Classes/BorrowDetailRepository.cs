@@ -17,6 +17,7 @@ namespace Mock.Repository.Repositories.Repository.Classes
         public APIResult<string> UpdateReturnedBook(int borrowingDetailId, int numberBookReturned)
         {
             var borrowingDetail = _context.BorrowingDetails.FirstOrDefault(c => c.Id == borrowingDetailId);
+            var bookAvailibile = _context.Books.FirstOrDefault(c => c.Id == borrowingDetail.BookId);
             if (borrowingDetail == null)
             {
                 return APIResult<string>.FailureResult("Không tìm thấy chi tiết mượn sách.");
@@ -29,7 +30,6 @@ namespace Mock.Repository.Repositories.Repository.Classes
             {
                 return APIResult<string>.FailureResult("Số lượng sách trả về không phù hợp.");
             }
-
             borrowingDetail.NumberReturnedBook = numberBookReturned;
 
             if (borrowingDetail.NumberReturnedBook == borrowingDetail.Quantity)
@@ -42,6 +42,8 @@ namespace Mock.Repository.Repositories.Repository.Classes
             {
                 borrowingDetail.Status = "Not Returned";
                 borrowingDetail.ActualReturnDate = DateTime.Now;
+                borrowingDetail.Quantity-=numberBookReturned;
+                bookAvailibile.Amount += numberBookReturned;
                 return APIResult<string>.SuccessResult("Đã trả sách.");
             }
             var borrowing = _context.Borrowings.FirstOrDefault(c=>c.Id == borrowingDetail.BorrowingId).BorrowingDetails.ToList();

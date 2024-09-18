@@ -55,9 +55,11 @@ namespace Mock.Bussiness.Service.BorrowingService
                     PenaltyFine = CheckPenalty(item.Id),
                     RequestDate = item.RequestDate,
                     RequestStatus = item.RequestStatus,
-                    TotalQuantity = item.TotalQuantity,
+                    TotalQuantity = CalculateTotalQuantity(item.Id),
                     UserId = item.UserId,
                     Username = item.User.LastName + item.User.FirstName,
+                    IsBookPickedUp=item.IsBookPickedUp==true?"Collected":"Not Pickup",
+                    IsPickUpLate=item.IsPickUpLate==false?"Over date":"On time"
                 };
                 listBorrowingDTO.Add(borrowingDTO);
             }
@@ -80,6 +82,16 @@ namespace Mock.Bussiness.Service.BorrowingService
             _unitOfWork.SaveChanges(); // Lưu thay đổi vào database sau khi cập nhật
             return result;
         }
+        public void UpdatePickup(int borrowingId)
+        {
+            _unitOfWork.BorrowingRepository.UpdatePickup(borrowingId);
+            _unitOfWork.SaveChanges();
+        }
 
+        public int? CalculateTotalQuantity(int borrowingId)
+        {
+           var result= _unitOfWork.BorrowingRepository.CalculateTotalQuantity(borrowingId);
+            return result;
+        }
     }
 }

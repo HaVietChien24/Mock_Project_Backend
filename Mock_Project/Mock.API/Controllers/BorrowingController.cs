@@ -33,6 +33,22 @@ namespace Mock.API.Controllers
 
             return BadRequest(result); 
         }
+        [HttpPut]
+        public IActionResult ConfirmPickedUp(int borrowingId)
+        {
+            try
+            {
+                _service.UpdatePickup(borrowingId);
+
+            }
+            catch (Exception ex) {
+                return BadRequest(ex.Message);
+            }
+            return Ok(new
+            {
+                Message = "Xác nhận đã trả"
+            });
+        }
 
         [HttpGet]
         public IActionResult GetBorrowingDetail(int borrowingId, int page = 1, int pageSize = 5)

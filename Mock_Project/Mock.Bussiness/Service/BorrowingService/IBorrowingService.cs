@@ -12,5 +12,7 @@ namespace Mock.Bussiness.Service.BorrowingService
         public int CheckPenalty(int borrowingId);
 
         public PageList<BorrowingDetailDTO> GetAllBorrowingDetail(int borrowingId,int page,int pageSize);
+        public void UpdatePickup(int borrowingId);
+        public int? CalculateTotalQuantity(int borrowingId);
     }
 }
