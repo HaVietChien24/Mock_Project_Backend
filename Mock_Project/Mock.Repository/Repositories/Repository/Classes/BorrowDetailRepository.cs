@@ -20,12 +20,12 @@ namespace Mock.Repository.Repositories.Repository.Classes
             {
                 return "Không tìm thấy chi tiết mượn sách.";
             }
-           
+
             if (borrowingDetail.Quantity < numberBookReturned)
             {
                 return "Số lượng sách trả về không phù hợp.";
             }
-          
+
             borrowingDetail.NumberReturnedBook += numberBookReturned;
 
             borrowingDetail.Quantity -= numberBookReturned;
@@ -38,6 +38,11 @@ namespace Mock.Repository.Repositories.Repository.Classes
             }
 
             return "Cập nhật số lượng sách trả thành công.";
+        }
+
+        public List<BorrowingDetails> getByRequestId(int requestId)
+        {
+            return _context.BorrowingDetails.Where(x => x.BorrowingId == requestId).ToList();
         }
     }
 }

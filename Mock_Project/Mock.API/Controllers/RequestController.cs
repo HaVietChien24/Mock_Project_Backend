@@ -30,5 +30,19 @@ namespace Mock.API.Controllers
                 return BadRequest("Có lỗi xảy ra");
             }
         }
+
+        [HttpPut("cancel-request")]
+        public IActionResult CancelRequest([FromBody]int requestId)
+        {
+            try
+            {
+                var result = _requestService.CancelRequest(requestId);
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Có lỗi xảy ra");
+            }
+        }
     }
 }
