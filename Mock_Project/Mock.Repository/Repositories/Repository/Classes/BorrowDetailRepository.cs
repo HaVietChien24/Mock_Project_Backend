@@ -42,14 +42,18 @@ namespace Mock.Repository.Repositories.Repository.Classes
             {
                 borrowingDetail.Status = "Not Returned";
                 borrowingDetail.ActualReturnDate = DateTime.Now;
-                borrowingDetail.Quantity-=numberBookReturned;
+                borrowingDetail.Quantity -= numberBookReturned;
                 bookAvailibile.Amount += numberBookReturned;
                 return APIResult<string>.SuccessResult("Đã trả sách.");
             }
-            var borrowing = _context.Borrowings.FirstOrDefault(c=>c.Id == borrowingDetail.BorrowingId).BorrowingDetails.ToList();
+            var borrowing = _context.Borrowings.FirstOrDefault(c => c.Id == borrowingDetail.BorrowingId).BorrowingDetails.ToList();
 
             return APIResult<string>.SuccessResult("Cập nhật số lượng sách trả thành công.");
         }
 
+        public List<BorrowingDetails> getByRequestId(int requestId)
+        {
+            return _context.BorrowingDetails.Where(x => x.BorrowingId == requestId).ToList();
+        }
     }
 }
