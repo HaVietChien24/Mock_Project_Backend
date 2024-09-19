@@ -53,5 +53,14 @@ namespace Mock.Bussiness.Service.WishListService
             return _unitOfWork.SaveChanges();
         }
 
+        public int UpdateDetailQuantity(int detailsId, int quantity)
+        {
+            var detail = _unitOfWork.WishListDetailRepository.GetByID(detailsId);
+            if (detail == null)
+                throw new Exception("Not Found");
+            detail.Quantity = quantity;
+            _unitOfWork.WishListDetailRepository.Update(detail);
+            return _unitOfWork.SaveChanges();
+        }
     }
 }
