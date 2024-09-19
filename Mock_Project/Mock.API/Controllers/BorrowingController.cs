@@ -56,5 +56,12 @@ namespace Mock.API.Controllers
             var result = _service.GetAllBorrowingDetail(borrowingId,page, pageSize);
             return Ok(result);
         }
+        [HttpGet]
+        public IActionResult ViewListBookBorrowingUser(int userId, int page = 1, int pageSize = 5)
+        {
+            var result = _service.ViewListBookBorrowingUser(userId, page, pageSize);
+            return Ok(result);
+        }
+
     }
 }

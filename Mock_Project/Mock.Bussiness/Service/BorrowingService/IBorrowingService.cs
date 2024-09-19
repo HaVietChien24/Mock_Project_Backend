@@ -1,4 +1,5 @@
 ﻿using Mock.Bussiness.DTO;
+using Mock.Core.Models;
 using Mock.Repository.ApiResult;
 
 namespace Mock.Bussiness.Service.BorrowingService
@@ -14,5 +15,6 @@ namespace Mock.Bussiness.Service.BorrowingService
         public PageList<BorrowingDetailDTO> GetAllBorrowingDetail(int borrowingId,int page,int pageSize);
         public void UpdatePickup(int borrowingId);
         public int? CalculateTotalQuantity(int borrowingId);
+        public PageList<BorrowingDetailDTO> ViewListBookBorrowingUser(int userId, int page=1,int pageSize=5);
     }
 }

@@ -13,7 +13,10 @@ namespace Mock.Repository.Repositories.Repository.Interfaces
 
         public void UpdatePickup(int borrowingId);
         public int? CalculateTotalQuantity(int borrowingId);
-        
+
+      
+
+
         List<Borrowing> GetAllRequestsByUserId(int id);
 
     }

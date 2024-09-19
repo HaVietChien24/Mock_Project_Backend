@@ -58,9 +58,10 @@ namespace Mock.Repository.Repositories.Repository.Classes
             var borrowing= _context.Borrowings.Include(c => c.User).Where(c => c.RequestStatus == "Accept").ToList();
             foreach (var item in borrowing )
             {
+               
                 if (item.ExpectedPickUpDate < DateTime.Now && item.IsBookPickedUp == false&& item.IsRestocked==false)
                 {
-                    item.IsPickUpLate = false;
+                    item.IsPickUpLate = true;
                     var borrowingDetail = _context.BorrowingDetails.Where(c => c.BorrowingId == item.Id).ToList();
                     foreach (var br in borrowingDetail)
                     {
@@ -69,10 +70,7 @@ namespace Mock.Repository.Repositories.Repository.Classes
                     }
                     item.IsRestocked = true;
                 }
-                else
-                {
-                    item.IsPickUpLate = true;
-                }
+             
             }
             _context.SaveChanges();
             return borrowing;
@@ -84,10 +82,7 @@ namespace Mock.Repository.Repositories.Repository.Classes
         public List<BorrowingDetails> GetBorrowingDetails(int borrowingId)
         {
 
-            var borrowingDetail = _context.BorrowingDetails.Include(c => c.Book).Where(c => c.BorrowingId == borrowingId).ToList();
-
-          
-
+            var borrowingDetail = _context.BorrowingDetails.Include(c=>c.Borrowing).Include(c => c.Book).Where(c => c.BorrowingId == borrowingId).ToList();
 
             return borrowingDetail;
         }
@@ -96,6 +91,7 @@ namespace Mock.Repository.Repositories.Repository.Classes
         public void UpdatePickup(int borrowingId)
         {
             var borrowingPickup = _context.Borrowings.FirstOrDefault(c => c.Id == borrowingId);
+            borrowingPickup.ActualPickUpDate = DateTime.Now;
             borrowingPickup.IsBookPickedUp = true;
         }
         public List<Borrowing> GetAllRequestsByUserId(int id)

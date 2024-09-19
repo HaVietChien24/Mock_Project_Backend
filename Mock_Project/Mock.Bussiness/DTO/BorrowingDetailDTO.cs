@@ -19,5 +19,8 @@ namespace Mock.Bussiness.DTO
         public int? NumberReturnedBook { get; set; } = 0;
         public decimal? Penalty { get; set; }
         public string? Status { get; set; }
+        
+        public bool? IsPickUpLate { get; set; }
+
     }
 }

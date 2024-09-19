@@ -4,6 +4,7 @@ using Mock.Bussiness.DTO;
 using Mock.Core.Models;
 using Mock.Repository.ApiResult;
 using Mock.Repository.UnitOfWork;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Mock.Bussiness.Service.BorrowingService
 {
@@ -58,8 +59,8 @@ namespace Mock.Bussiness.Service.BorrowingService
                     TotalQuantity = CalculateTotalQuantity(item.Id),
                     UserId = item.UserId,
                     Username = item.User.LastName + item.User.FirstName,
-                    IsBookPickedUp=item.IsBookPickedUp==true?"Collected":"Not Pickup",
-                    IsPickUpLate=item.IsPickUpLate==false?"Over date":"On time"
+                    IsBookPickedUp=item.IsBookPickedUp == true?"Collected":"Not Pickup",
+                    IsPickUpLate=item.IsPickUpLate==true? "Over date" : "On time"
                 };
                 listBorrowingDTO.Add(borrowingDTO);
             }
@@ -92,6 +93,15 @@ namespace Mock.Bussiness.Service.BorrowingService
         {
            var result= _unitOfWork.BorrowingRepository.CalculateTotalQuantity(borrowingId);
             return result;
+        }
+
+        public PageList<BorrowingDetailDTO> ViewListBookBorrowingUser(int userId,int page=1,int pageSize=5)
+        {
+            var query = _unitOfWork.BorrowDetailRepository.ViewListBookBorrowingUser(userId);
+            var borrowingDetailDTO = _mapper.Map<List<BorrowingDetailDTO>>(query);
+            var result = PageList<BorrowingDetailDTO>.CreatePage(borrowingDetailDTO, page, pageSize);
+            return result;
+
         }
     }
 }
