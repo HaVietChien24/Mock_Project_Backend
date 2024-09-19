@@ -1,4 +1,5 @@
-﻿using Mock.Core.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Mock.Core.Data;
 using Mock.Core.Models;
 using Mock.Repository.ApiResult;
 using Mock.Repository.Repositories.Generic;
@@ -51,5 +52,9 @@ namespace Mock.Repository.Repositories.Repository.Classes
             return APIResult<string>.SuccessResult("Cập nhật số lượng sách trả thành công.");
         }
 
+        public List<BorrowingDetails> ViewListBookBorrowingUser(int userId)
+        {
+            return _context.BorrowingDetails.Include(c => c.Book).Include(c => c.Borrowing).Where(c => c.Borrowing.UserId == userId).ToList();
+        }
     }
 }

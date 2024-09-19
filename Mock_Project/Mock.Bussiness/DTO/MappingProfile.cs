@@ -16,7 +16,10 @@ namespace Mock.Bussiness.DTO
             
 
             CreateMap<BorrowingDetails, BorrowingDetailDTO>()
-           .ForMember(dest => dest.BookName, opt => opt.MapFrom(src => src.Book.Title)).ReverseMap();
+           .ForMember(dest => dest.BookName, opt => opt.MapFrom(src => src.Book.Title))
+           .ForMember(dest =>dest.IsPickUpLate,opt=>opt.MapFrom(src=>src.Borrowing.IsPickUpLate)).ReverseMap();
+         
+          
 
 
             CreateMap<RegisterDTO, User>();

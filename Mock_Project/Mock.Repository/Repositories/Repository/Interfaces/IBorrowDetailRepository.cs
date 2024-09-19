@@ -9,5 +9,7 @@ namespace Mock.Repository.Repositories.Repository.Interfaces
     {
         public APIResult<string> UpdateReturnedBook(int borrowingDetailId, int numberBookReturned);
 
+        public List<BorrowingDetails> ViewListBookBorrowingUser(int userId);
+
     }
 }
