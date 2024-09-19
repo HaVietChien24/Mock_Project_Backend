@@ -62,5 +62,12 @@ namespace Mock.Bussiness.Service.WishListService
             _unitOfWork.WishListDetailRepository.Update(detail);
             return _unitOfWork.SaveChanges();
         }
+
+        public int DeleteWishlistDetail(int wishlistDetailId)
+        {
+            var detail = _unitOfWork.WishListDetailRepository.GetByID(wishlistDetailId);
+            _unitOfWork.WishListDetailRepository.Delete(detail);
+            return _unitOfWork.SaveChanges();
+        }
     }
 }
