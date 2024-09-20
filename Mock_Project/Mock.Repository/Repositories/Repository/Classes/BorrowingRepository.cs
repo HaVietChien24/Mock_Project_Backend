@@ -114,6 +114,8 @@ namespace Mock.Repository.Repositories.Repository.Classes
         {
             _context.Borrowings.Update(borrowing);
             _context.SaveChanges();  // Lưu thay đổi vào cơ sở dữ liệu
+            //test
         }
+
     }
 }
