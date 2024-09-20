@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Mock.Bussiness.DTO;
 using Mock.Bussiness.Service.UserService;
 using Mock.Core.Models;
-using System.Security.Claims;
 
 namespace Mock.API.Controllers
 {
