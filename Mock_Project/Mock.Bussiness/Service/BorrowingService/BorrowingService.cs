@@ -58,7 +58,7 @@ namespace Mock.Bussiness.Service.BorrowingService
                     RequestStatus = item.RequestStatus,
                     TotalQuantity = CalculateTotalQuantity(item.Id),
                     UserId = item.UserId,
-                    Username = item.User.LastName + item.User.FirstName,
+                    Username = item.User.Username ,
                     IsBookPickedUp=item.IsBookPickedUp == true?"Collected":"Not Pickup",
                     IsPickUpLate=item.IsPickUpLate==true? "Over date" : "On time"
                 };
