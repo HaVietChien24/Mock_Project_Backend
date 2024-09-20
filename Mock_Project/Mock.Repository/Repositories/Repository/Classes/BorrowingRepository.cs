@@ -16,7 +16,7 @@ namespace Mock.Repository.Repositories.Repository.Classes
 
         public int? CalculateTotalQuantity(int borrowingId)
         {
-            var total= _context.BorrowingDetails.Where(c=>c.BorrowingId==borrowingId).Sum(c=>c.Quantity);
+            var total = _context.BorrowingDetails.Where(c => c.BorrowingId == borrowingId).Sum(c => c.Quantity);
             return total;
         }
         public string CheckBorrowingStatus(int borrowingId)
@@ -26,14 +26,15 @@ namespace Mock.Repository.Repositories.Repository.Classes
                            .Where(c => c.Id == borrowingId)
                            .Select(c => new
                            {
-                             BorrowingId = c.Id,
-                            Status = c.BorrowingDetails.All(d => d.Status != "Not Returned") ? "Returned" : "Not Returned",
-                            ExpectedReturnDate=c.ExpectedReturnDate,
+                               BorrowingId = c.Id,
+                               Status = c.BorrowingDetails.All(d => d.Status != "Not Returned") ? "Returned" : "Not Returned",
+                               ExpectedReturnDate = c.ExpectedReturnDate,
                            }).FirstOrDefault();
-           
+
             return borrowing.Status;
         }
-        public int CheckPenalty(int borrowingId) {
+        public int CheckPenalty(int borrowingId)
+        {
             int penalty = 0;
             var borrowing = _context.Borrowings
                           .Include(c => c.BorrowingDetails)
@@ -43,9 +44,9 @@ namespace Mock.Repository.Repositories.Repository.Classes
                               BorrowingId = c.Id,
                               Status = c.BorrowingDetails.All(d => d.Status != "Not Returned") ? "Returned" : "Not Returned",
                               ExpectedReturnDate = c.ExpectedReturnDate,
-                              IsBookPickedUp=c.IsBookPickedUp
+                              IsBookPickedUp = c.IsBookPickedUp
                           }).FirstOrDefault();
-            if (borrowing.Status == "Not Returned" && borrowing.ExpectedReturnDate <= DateTime.UtcNow&& borrowing.IsBookPickedUp== true)
+            if (borrowing.Status == "Not Returned" && borrowing.ExpectedReturnDate <= DateTime.UtcNow && borrowing.IsBookPickedUp == true)
             {
                 var overdueDays = (DateTime.UtcNow - borrowing.ExpectedReturnDate).Value.Days;
                 penalty = overdueDays * 5000;
@@ -55,11 +56,11 @@ namespace Mock.Repository.Repositories.Repository.Classes
         public List<Borrowing> GetAllBorrowings()
         {
 
-            var borrowing= _context.Borrowings.Include(c => c.User).Where(c => c.RequestStatus == "Accept").ToList();
-            foreach (var item in borrowing )
+            var borrowing = _context.Borrowings.Include(c => c.User).Where(c => c.RequestStatus == "Accept").ToList();
+            foreach (var item in borrowing)
             {
-               
-                if (item.ExpectedPickUpDate < DateTime.Now && item.IsBookPickedUp == false&& item.IsRestocked==false)
+
+                if (item.ExpectedPickUpDate < DateTime.Now && item.IsBookPickedUp == false && item.IsRestocked == false)
                 {
                     item.IsPickUpLate = true;
                     var borrowingDetail = _context.BorrowingDetails.Where(c => c.BorrowingId == item.Id).ToList();
@@ -78,7 +79,7 @@ namespace Mock.Repository.Repositories.Repository.Classes
         public List<BorrowingDetails> GetBorrowingDetails(int borrowingId)
         {
 
-            var borrowingDetail = _context.BorrowingDetails.Include(c=>c.Borrowing).Include(c => c.Book).Where(c => c.BorrowingId == borrowingId).ToList();
+            var borrowingDetail = _context.BorrowingDetails.Include(c => c.Borrowing).Include(c => c.Book).Where(c => c.BorrowingId == borrowingId).ToList();
 
             return borrowingDetail;
         }
@@ -96,6 +97,23 @@ namespace Mock.Repository.Repositories.Repository.Classes
                 .ThenInclude(bd => bd.Book).Where(x => x.UserId == id && x.RequestStatus.ToLower() == "pending")
                 .ToList();
             return requests;
+        }
+
+        public List<Borrowing> GetAllRequestsByAllUser()
+        {
+            var requests = _context.Borrowings.Include(u => u.User).Include(x => x.BorrowingDetails).ThenInclude(b => b.Book)
+                .Where(u => u.RequestStatus.ToLower() == "pending")
+                .ToList();
+            return requests;
+        }
+        public Borrowing GetBorrowingById(int borrowingId)
+        {
+            return _context.Borrowings.FirstOrDefault(b => b.Id == borrowingId);
+        }
+        public void UpdateBorrowing(Borrowing borrowing)
+        {
+            _context.Borrowings.Update(borrowing);
+            _context.SaveChanges();  // Lưu thay đổi vào cơ sở dữ liệu
         }
     }
 }
