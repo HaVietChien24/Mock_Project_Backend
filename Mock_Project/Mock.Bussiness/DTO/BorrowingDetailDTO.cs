@@ -21,6 +21,7 @@ namespace Mock.Bussiness.DTO
         public string? Status { get; set; }
         
         public bool? IsPickUpLate { get; set; }
+        public string? ImageUrl { get; set; }
 
     }
 }

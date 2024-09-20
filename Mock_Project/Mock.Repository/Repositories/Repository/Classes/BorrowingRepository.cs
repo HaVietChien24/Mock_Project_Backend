@@ -70,13 +70,9 @@ namespace Mock.Repository.Repositories.Repository.Classes
                     }
                     item.IsRestocked = true;
                 }
-             
             }
             _context.SaveChanges();
             return borrowing;
-
-            
-
         }
 
         public List<BorrowingDetails> GetBorrowingDetails(int borrowingId)

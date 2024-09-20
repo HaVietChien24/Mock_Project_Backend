@@ -51,11 +51,10 @@ namespace Mock.Repository.Repositories.Repository.Classes
 
             return APIResult<string>.SuccessResult("Cập nhật số lượng sách trả thành công.");
         }
-
-
         public List<BorrowingDetails> ViewListBookBorrowingUser(int userId)
         {
             return _context.BorrowingDetails.Include(c => c.Book).Include(c => c.Borrowing).Where(c => c.Borrowing.UserId == userId).ToList();
+        }
 
         public List<BorrowingDetails> getByRequestId(int requestId)
         {
