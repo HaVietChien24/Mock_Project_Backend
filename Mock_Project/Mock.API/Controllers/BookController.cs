@@ -113,8 +113,22 @@ namespace Mock.API.Controllers
             }
         }
 
-
-
-
+        [HttpGet("get-by-id/{bookId}")]
+        public IActionResult GetById(int bookId)
+        {
+            try
+            {
+                var bookDTO = _bookService.GetById(bookId);
+                if (bookDTO == null)
+                {
+                    return Ok("Không có dữ liệu");
+                }
+                return Ok(bookDTO);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Có lỗi xảy ra");
+            }
+        }
     }
 }

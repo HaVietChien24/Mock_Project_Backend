@@ -97,10 +97,9 @@ namespace Mock.Repository.Repositories.Repository.Classes
         public List<Borrowing> GetAllRequestsByUserId(int id)
         {
             var requests = _context.Borrowings.Include(x => x.BorrowingDetails)
-                .ThenInclude(bd => bd.Book).Where(x => x.RequestStatus.ToLower() == "pending")
+                .ThenInclude(bd => bd.Book).Where(x => x.UserId == id && x.RequestStatus.ToLower() == "pending")
                 .ToList();
             return requests;
-
         }
     }
 }

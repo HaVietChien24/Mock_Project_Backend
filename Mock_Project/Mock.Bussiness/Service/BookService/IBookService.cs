@@ -20,6 +20,6 @@ namespace Mock.Bussiness.Service.BookService
         // Sửa kiểu trả về thành Task<AddBookRequestDTO>
         Task<AddBookRequestDTO> AddBookAsync(AddBookRequestDTO request);
         Task<UpdateBookRequestDTO> UpdateBookAsync(UpdateBookRequestDTO request);
-
+        BookDTO GetById(int bookId);
     }
 }
