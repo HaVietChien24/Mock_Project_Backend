@@ -59,5 +59,19 @@ namespace Mock.API.Controllers
                 return BadRequest("Có lỗi xảy ra");
             }
         }
+
+        [HttpDelete("delete-wishlist-detail/{wishlistDetailId}")]
+        public IActionResult DeleteWishlistDetail(int wishlistDetailId)
+        {
+            try
+            {
+                var result = _wishListService.DeleteWishlistDetail(wishlistDetailId);
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Có lỗi xảy ra");
+            }
+        }
     }
 }
