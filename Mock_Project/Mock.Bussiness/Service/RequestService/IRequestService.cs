@@ -9,5 +9,11 @@ namespace Mock.Bussiness.Service.RequestService
         int CancelRequest(int requestId);
         int CreateRequest(RequestDTO requestDTO);
         List<RequestDTO> GetAllByUserId(int id);
+
+
+        List<RequestByAllUserDTO> GetAllRequestByAllUsers();
+
+        // Các phương thức khác...
+        string UpdateRequestStatus(int borrowingId, string action);  // Cập nhật trạng thái yêu cầu
     }
 }

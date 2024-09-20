@@ -64,5 +64,41 @@ namespace Mock.Bussiness.Service.RequestService
             return _unitOfWork.SaveChanges();
 
         }
+
+        public List<RequestByAllUserDTO> GetAllRequestByAllUsers()
+        {
+            var list = _unitOfWork.BorrowingRepository.GetAllRequestsByAllUser();
+            return _mapper.Map<List<RequestByAllUserDTO>>(list);
+        }
+
+        public string UpdateRequestStatus(int borrowingId, string action)
+        {
+            // Lấy yêu cầu mượn sách dựa trên borrowingId
+            var borrowingRequest = _unitOfWork.BorrowingRepository.GetBorrowingById(borrowingId);
+
+            // Kiểm tra xem yêu cầu có tồn tại và có ở trạng thái "pending" hay không
+            if (borrowingRequest != null && borrowingRequest.RequestStatus.ToLower() == "pending")
+            {
+                // Kiểm tra action để xác định trạng thái mới
+                if (action.ToLower() == "accept")
+                {
+                    borrowingRequest.RequestStatus = "Accepted";
+                }
+                else if (action.ToLower() == "reject")
+                {
+                    borrowingRequest.RequestStatus = "Rejected";
+                }
+                else
+                {
+                    return "Invalid action. Use 'accept' or 'reject'.";
+                }
+
+                // Cập nhật trạng thái yêu cầu mượn sách
+                _unitOfWork.BorrowingRepository.UpdateBorrowing(borrowingRequest);
+                return $"Request {action.ToLower()}ed successfully.";
+            }
+
+            return "Request not found or not in pending status.";
+        }
     }
 }

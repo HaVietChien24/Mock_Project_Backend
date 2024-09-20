@@ -40,11 +40,14 @@ namespace Mock.Bussiness.DTO
             CreateMap<WishListDetails, WishListDetailsDTO>().ForMember(dest => dest.BookTitle, opt => opt.MapFrom(src => src.Book.Title))
                 .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.Book.ImageUrl)).ReverseMap();
             CreateMap<RequestDTO, Borrowing>();
+           
             CreateMap<BorrowingDetails, RequestDetailsDTO>()
                 .ForMember(dest => dest.BookTitle, opt => opt.MapFrom(src => src.Book.Title))
                 .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.Book.ImageUrl));
             CreateMap<Borrowing, RequestDTO>().ForMember(dest => dest.RequestDetails, opt => opt.MapFrom(src => src.BorrowingDetails))
                 .ForMember(dest => dest.TotalQuantity, opt => opt.MapFrom(src => src.BorrowingDetails.Sum(bd => bd.Quantity)));
+            CreateMap<Borrowing, RequestByAllUserDTO>().ForMember(dest => dest.RequestDetails, opt => opt.MapFrom(src => src.BorrowingDetails))
+                .ForMember(dest => dest.TotalQuantity, opt => opt.MapFrom(src => src.BorrowingDetails.Sum(bd => bd.Quantity))).ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.Username));
             CreateMap<WishListDetails, BorrowingDetails>();
         }
     }

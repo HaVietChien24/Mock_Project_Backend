@@ -56,9 +56,11 @@ namespace Mock.Repository.Repositories.Repository.Classes
             return _context.BorrowingDetails.Include(c => c.Book).Include(c => c.Borrowing).Where(c => c.Borrowing.UserId == userId).ToList();
         }
 
+           
+        }
         public List<BorrowingDetails> getByRequestId(int requestId)
         {
             return _context.BorrowingDetails.Where(x => x.BorrowingId == requestId).ToList();
         }
-    }
+    } 
 }
