@@ -32,6 +32,24 @@ namespace Mock.API.Controllers
             }
         }
 
+        [HttpGet("get-all-request-by-all-user")]
+        public IActionResult GetAllRequestByAllUser()
+        {
+            try
+            {
+                var list = _requestService.GetAllRequestByAllUsers();
+                if (list.Count == 0)
+                {
+                    return Ok("Không có dữ liệu");
+                }
+                return Ok(list);
+            }
+            catch (Exception e)
+            {
+                return BadRequest( e.Message);
+            }
+        }
+
         [HttpPut("cancel-request")]
         public IActionResult CancelRequest([FromBody]int requestId)
         {
@@ -58,6 +76,20 @@ namespace Mock.API.Controllers
             {
                 return BadRequest("Có lỗi xảy ra");
             }
+        }
+
+
+        [HttpPost("update-request-status")]
+        public IActionResult UpdateRequestStatus( int borrowingId, string action)
+        {
+            var result = _requestService.UpdateRequestStatus(borrowingId, action);
+
+            if (result.Contains("successfully"))
+            {
+                return Ok(new { message = result });
+            }
+
+            return BadRequest(new { message = result });
         }
     }
 }

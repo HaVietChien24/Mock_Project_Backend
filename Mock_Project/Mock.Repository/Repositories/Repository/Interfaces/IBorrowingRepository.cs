@@ -18,6 +18,8 @@ namespace Mock.Repository.Repositories.Repository.Interfaces
 
 
         List<Borrowing> GetAllRequestsByUserId(int id);
-
+        List<Borrowing> GetAllRequestsByAllUser();
+        Borrowing GetBorrowingById(int borrowingId);  // Lấy yêu cầu mượn sách dựa trên ID
+        void UpdateBorrowing(Borrowing borrowing);    // Cập nhật yêu cầu mượn sách
     }
 }

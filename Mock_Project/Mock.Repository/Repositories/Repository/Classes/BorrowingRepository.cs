@@ -97,10 +97,30 @@ namespace Mock.Repository.Repositories.Repository.Classes
         public List<Borrowing> GetAllRequestsByUserId(int id)
         {
             var requests = _context.Borrowings.Include(x => x.BorrowingDetails)
-                .ThenInclude(bd => bd.Book).Where(x => x.RequestStatus.ToLower() == "pending")
+                .ThenInclude(bd => bd.Book).Where(x => x.RequestStatus.ToLower()  == "pending")
                 .ToList();
             return requests;
 
         }
+
+        public List<Borrowing> GetAllRequestsByAllUser()
+        {
+            var requests = _context.Borrowings.Include(u => u.User).Include(x => x.BorrowingDetails).ThenInclude(b=>b.Book)
+                .Where(u => u.RequestStatus.ToLower() == "pending")
+                .ToList();
+            return requests;
+        }
+
+        public Borrowing GetBorrowingById(int borrowingId)
+        {
+            return _context.Borrowings.FirstOrDefault(b => b.Id == borrowingId);
+        }
+
+        public void UpdateBorrowing(Borrowing borrowing)
+        {
+            _context.Borrowings.Update(borrowing);
+            _context.SaveChanges();  // Lưu thay đổi vào cơ sở dữ liệu
+        }
+
     }
 }
