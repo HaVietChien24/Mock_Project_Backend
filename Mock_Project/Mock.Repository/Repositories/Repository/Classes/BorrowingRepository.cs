@@ -27,8 +27,10 @@ namespace Mock.Repository.Repositories.Repository.Classes
                            .Select(c => new
                            {
                              BorrowingId = c.Id,
-                            Status = c.BorrowingDetails.All(d => d.Status != "Not Returned") ? "Returned" : "Not Returned",
-                            ExpectedReturnDate=c.ExpectedReturnDate,
+                             Status = c.IsBookPickedUp == false
+                                      ? ""  
+                                      : (c.BorrowingDetails.All(d => d.Status != "Not Returned") ? "Returned" : "Not Returned"),
+                               ExpectedReturnDate =c.ExpectedReturnDate,
                            }).FirstOrDefault();
            
             return borrowing.Status;
@@ -87,6 +89,7 @@ namespace Mock.Repository.Repositories.Repository.Classes
         public void UpdatePickup(int borrowingId)
         {
             var borrowingPickup = _context.Borrowings.FirstOrDefault(c => c.Id == borrowingId);
+
             borrowingPickup.ActualPickUpDate = DateTime.Now;
             borrowingPickup.IsBookPickedUp = true;
         }

@@ -23,6 +23,7 @@ namespace Mock.Bussiness.DTO
            .ForMember(dest => dest.BookName, opt => opt.MapFrom(src => src.Book.Title))
            .ForMember(dest =>dest.IsPickUpLate,opt=>opt.MapFrom(src=>src.Borrowing.IsPickUpLate))
            .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.Book.ImageUrl))
+           .ForMember(dest=>dest.IsBookPickedUp,opt=>opt.MapFrom(src=>src.Borrowing.IsBookPickedUp))
            .ReverseMap();
          
           
