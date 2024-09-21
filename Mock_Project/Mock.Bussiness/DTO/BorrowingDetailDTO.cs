@@ -16,11 +16,14 @@ namespace Mock.Bussiness.DTO
         public string? BookName { get; set; }
         public int? Quantity { get; set; }
         public DateTime? ActualReturnDate { get; set; } //ngày trả thực tế
+        public DateTime? ExpectedPickupDate { get; set; } 
         public int? NumberReturnedBook { get; set; } = 0;
         public decimal? Penalty { get; set; }
         public string? Status { get; set; }
         
         public bool? IsPickUpLate { get; set; }
+
+        public bool? IsBookPickedUp { get; set; }
         public string? ImageUrl { get; set; }
 
     }

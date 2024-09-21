@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Mock.Bussiness;
 using Mock.Bussiness.DTO;
 using Mock.Bussiness.Service.BookService;
 
@@ -15,7 +16,7 @@ namespace Mock.API.Controllers
         }
 
         [HttpGet("get-all-books")]
-        public IActionResult GetAll()
+        public IActionResult GetAll(int? pageNumber, int? pageSize)
         {
             try
             {
@@ -24,16 +25,25 @@ namespace Mock.API.Controllers
                 {
                     return Ok("Không có dữ liệu");
                 }
-                return Ok(list);
+                if (!pageNumber.HasValue && !pageSize.HasValue)
+                {
+                    return Ok(list);
+                }
+                if (pageNumber.HasValue && pageSize.HasValue)
+                {
+                    PageList<BookDTO> pageList = PageList<BookDTO>.CreatePage(list, pageNumber.Value, pageSize.Value);
+                    return Ok(pageList);
+                }
+                throw new Exception("Thiếu tham số truyền vào");
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return BadRequest("Có lỗi xảy ra");
+                return BadRequest("Có lỗi xảy ra: " + e.Message);
             }
         }
 
         [HttpGet("get-by-genre-id/{id}")]
-        public IActionResult GetByGenreId(int id)
+        public IActionResult GetByGenreId(int id, int? pageNumber, int? pageSize)
         {
             try
             {
@@ -42,7 +52,16 @@ namespace Mock.API.Controllers
                 {
                     return Ok("Không có dữ liệu");
                 }
-                return Ok(list);
+                if (!pageNumber.HasValue && !pageSize.HasValue)
+                {
+                    return Ok(list);
+                }
+                if (pageNumber.HasValue && pageSize.HasValue)
+                {
+                    PageList<BookDTO> pageList = PageList<BookDTO>.CreatePage(list, pageNumber.Value, pageSize.Value);
+                    return Ok(pageList);
+                }
+                throw new Exception("Thiếu tham số truyền vào");
             }
             catch (Exception)
             {
@@ -51,7 +70,7 @@ namespace Mock.API.Controllers
         }
 
         [HttpGet("search-by-title-or-author")]
-        public IActionResult SearchByTitleOrAuthor([FromQuery] string search)
+        public IActionResult SearchByTitleOrAuthor([FromQuery] string search, int? pageNumber, int? pageSize)
         {
             try
             {
@@ -60,7 +79,16 @@ namespace Mock.API.Controllers
                 {
                     return Ok("Không có dữ liệu");
                 }
-                return Ok(list);
+                if (!pageNumber.HasValue && !pageSize.HasValue)
+                {
+                    return Ok(list);
+                }
+                if (pageNumber.HasValue && pageSize.HasValue)
+                {
+                    PageList<BookDTO> pageList = PageList<BookDTO>.CreatePage(list, pageNumber.Value, pageSize.Value);
+                    return Ok(pageList);
+                }
+                throw new Exception("Thiếu tham số truyền vào");
             }
             catch (Exception)
             {

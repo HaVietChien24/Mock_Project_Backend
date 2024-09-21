@@ -13,7 +13,6 @@ namespace Mock.Repository.Repositories.Repository.Classes
         {
             _context = context;
         }
-
         public int? CalculateTotalQuantity(int borrowingId)
         {
             var total = _context.BorrowingDetails.Where(c => c.BorrowingId == borrowingId).Sum(c => c.Quantity);
@@ -26,9 +25,11 @@ namespace Mock.Repository.Repositories.Repository.Classes
                            .Where(c => c.Id == borrowingId)
                            .Select(c => new
                            {
-                               BorrowingId = c.Id,
-                               Status = c.BorrowingDetails.All(d => d.Status != "Not Returned") ? "Returned" : "Not Returned",
-                               ExpectedReturnDate = c.ExpectedReturnDate,
+                             BorrowingId = c.Id,
+                             Status = c.IsBookPickedUp == false
+                                      ? ""  
+                                      : (c.BorrowingDetails.All(d => d.Status != "Not Returned") ? "Returned" : "Not Returned"),
+                               ExpectedReturnDate =c.ExpectedReturnDate,
                            }).FirstOrDefault();
 
             return borrowing.Status;
@@ -75,19 +76,15 @@ namespace Mock.Repository.Repositories.Repository.Classes
             _context.SaveChanges();
             return borrowing;
         }
-
         public List<BorrowingDetails> GetBorrowingDetails(int borrowingId)
         {
-
-            var borrowingDetail = _context.BorrowingDetails.Include(c => c.Borrowing).Include(c => c.Book).Where(c => c.BorrowingId == borrowingId).ToList();
-
+            var borrowingDetail = _context.BorrowingDetails.Include(c=>c.Borrowing).Include(c => c.Book).Where(c => c.BorrowingId == borrowingId).ToList();
             return borrowingDetail;
         }
-
-
         public void UpdatePickup(int borrowingId)
         {
             var borrowingPickup = _context.Borrowings.FirstOrDefault(c => c.Id == borrowingId);
+
             borrowingPickup.ActualPickUpDate = DateTime.Now;
             borrowingPickup.IsBookPickedUp = true;
         }
@@ -101,21 +98,17 @@ namespace Mock.Repository.Repositories.Repository.Classes
 
         public List<Borrowing> GetAllRequestsByAllUser()
         {
-            var requests = _context.Borrowings.Include(u => u.User).Include(x => x.BorrowingDetails).ThenInclude(b => b.Book)
-                .Where(u => u.RequestStatus.ToLower() == "pending")
-                .ToList();
-            return requests;
-        }
-        public Borrowing GetBorrowingById(int borrowingId)
-        {
-            return _context.Borrowings.FirstOrDefault(b => b.Id == borrowingId);
-        }
-        public void UpdateBorrowing(Borrowing borrowing)
-        {
-            _context.Borrowings.Update(borrowing);
-            _context.SaveChanges();  // Lưu thay đổi vào cơ sở dữ liệu
-            //test
+            throw new NotImplementedException();
         }
 
+        public Borrowing GetBorrowingById(int borrowingId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateBorrowing(Borrowing borrowing)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
