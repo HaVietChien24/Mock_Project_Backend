@@ -13,10 +13,9 @@ namespace Mock.Repository.Repositories.Repository.Classes
         {
             _context = context;
         }
-
         public int? CalculateTotalQuantity(int borrowingId)
         {
-            var total= _context.BorrowingDetails.Where(c=>c.BorrowingId==borrowingId).Sum(c=>c.Quantity);
+            var total = _context.BorrowingDetails.Where(c => c.BorrowingId == borrowingId).Sum(c => c.Quantity);
             return total;
         }
         public string CheckBorrowingStatus(int borrowingId)
@@ -32,10 +31,11 @@ namespace Mock.Repository.Repositories.Repository.Classes
                                       : (c.BorrowingDetails.All(d => d.Status != "Not Returned") ? "Returned" : "Not Returned"),
                                ExpectedReturnDate =c.ExpectedReturnDate,
                            }).FirstOrDefault();
-           
+
             return borrowing.Status;
         }
-        public int CheckPenalty(int borrowingId) {
+        public int CheckPenalty(int borrowingId)
+        {
             int penalty = 0;
             var borrowing = _context.Borrowings
                           .Include(c => c.BorrowingDetails)
@@ -45,9 +45,9 @@ namespace Mock.Repository.Repositories.Repository.Classes
                               BorrowingId = c.Id,
                               Status = c.BorrowingDetails.All(d => d.Status != "Not Returned") ? "Returned" : "Not Returned",
                               ExpectedReturnDate = c.ExpectedReturnDate,
-                              IsBookPickedUp=c.IsBookPickedUp
+                              IsBookPickedUp = c.IsBookPickedUp
                           }).FirstOrDefault();
-            if (borrowing.Status == "Not Returned" && borrowing.ExpectedReturnDate <= DateTime.UtcNow&& borrowing.IsBookPickedUp== true)
+            if (borrowing.Status == "Not Returned" && borrowing.ExpectedReturnDate <= DateTime.UtcNow && borrowing.IsBookPickedUp == true)
             {
                 var overdueDays = (DateTime.UtcNow - borrowing.ExpectedReturnDate).Value.Days;
                 penalty = overdueDays * 5000;
@@ -57,11 +57,11 @@ namespace Mock.Repository.Repositories.Repository.Classes
         public List<Borrowing> GetAllBorrowings()
         {
 
-            var borrowing= _context.Borrowings.Include(c => c.User).Where(c => c.RequestStatus == "Accept").ToList();
-            foreach (var item in borrowing )
+            var borrowing = _context.Borrowings.Include(c => c.User).Where(c => c.RequestStatus == "Accept").ToList();
+            foreach (var item in borrowing)
             {
-               
-                if (item.ExpectedPickUpDate < DateTime.Now && item.IsBookPickedUp == false&& item.IsRestocked==false)
+
+                if (item.ExpectedPickUpDate < DateTime.Now && item.IsBookPickedUp == false && item.IsRestocked == false)
                 {
                     item.IsPickUpLate = true;
                     var borrowingDetail = _context.BorrowingDetails.Where(c => c.BorrowingId == item.Id).ToList();
@@ -76,16 +76,11 @@ namespace Mock.Repository.Repositories.Repository.Classes
             _context.SaveChanges();
             return borrowing;
         }
-
         public List<BorrowingDetails> GetBorrowingDetails(int borrowingId)
         {
-
             var borrowingDetail = _context.BorrowingDetails.Include(c=>c.Borrowing).Include(c => c.Book).Where(c => c.BorrowingId == borrowingId).ToList();
-
             return borrowingDetail;
         }
-
-
         public void UpdatePickup(int borrowingId)
         {
             var borrowingPickup = _context.Borrowings.FirstOrDefault(c => c.Id == borrowingId);
@@ -99,6 +94,21 @@ namespace Mock.Repository.Repositories.Repository.Classes
                 .ThenInclude(bd => bd.Book).Where(x => x.UserId == id && x.RequestStatus.ToLower() == "pending")
                 .ToList();
             return requests;
+        }
+
+        public List<Borrowing> GetAllRequestsByAllUser()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Borrowing GetBorrowingById(int borrowingId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateBorrowing(Borrowing borrowing)
+        {
+            throw new NotImplementedException();
         }
     }
 }
