@@ -46,7 +46,7 @@ namespace Mock.API.Controllers
             }
             return Ok(new
             {
-                Message = "Xác nhận đã trả"
+                Message = "Xác nhận đã lấy"
             });
         }
 
