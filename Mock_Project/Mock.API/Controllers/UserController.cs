@@ -71,7 +71,7 @@ namespace Mock.API.Controllers
             {
                 if (_userService.GetByUsername(registerDTO.Username) != null)
                 {
-                    return BadRequest(new AuthResultDTO(null, "Account already exists"));
+                    return BadRequest(new AuthResultDTO(null, "Username already exists"));
                 }
 
                 if (_userService.GetAll().Any(x => x.Email == registerDTO.Email) == true && registerDTO.Email != "")
@@ -105,7 +105,7 @@ namespace Mock.API.Controllers
 
                 if (result > 0)
                 {
-                    return Ok(new AuthResultDTO(null, null));
+                    return Ok(new AuthResultDTO(null, "Register User Successfully"));
                 }
                 else
                 {
