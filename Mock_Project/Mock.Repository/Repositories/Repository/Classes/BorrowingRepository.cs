@@ -13,7 +13,6 @@ namespace Mock.Repository.Repositories.Repository.Classes
         {
             _context = context;
         }
-
         public int? CalculateTotalQuantity(int borrowingId)
         {
             var total= _context.BorrowingDetails.Where(c=>c.BorrowingId==borrowingId).Sum(c=>c.Quantity);
@@ -76,16 +75,11 @@ namespace Mock.Repository.Repositories.Repository.Classes
             _context.SaveChanges();
             return borrowing;
         }
-
         public List<BorrowingDetails> GetBorrowingDetails(int borrowingId)
         {
-
             var borrowingDetail = _context.BorrowingDetails.Include(c=>c.Borrowing).Include(c => c.Book).Where(c => c.BorrowingId == borrowingId).ToList();
-
             return borrowingDetail;
         }
-
-
         public void UpdatePickup(int borrowingId)
         {
             var borrowingPickup = _context.Borrowings.FirstOrDefault(c => c.Id == borrowingId);
@@ -99,6 +93,21 @@ namespace Mock.Repository.Repositories.Repository.Classes
                 .ThenInclude(bd => bd.Book).Where(x => x.UserId == id && x.RequestStatus.ToLower() == "pending")
                 .ToList();
             return requests;
+        }
+
+        public List<Borrowing> GetAllRequestsByAllUser()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Borrowing GetBorrowingById(int borrowingId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateBorrowing(Borrowing borrowing)
+        {
+            throw new NotImplementedException();
         }
     }
 }
