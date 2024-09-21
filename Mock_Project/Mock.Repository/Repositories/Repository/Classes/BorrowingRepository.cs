@@ -98,17 +98,19 @@ namespace Mock.Repository.Repositories.Repository.Classes
 
         public List<Borrowing> GetAllRequestsByAllUser()
         {
-            throw new NotImplementedException();
+            var requests = _context.Borrowings.Include(u => u.User).Include(x => x.BorrowingDetails).ThenInclude(b => b.Book)
+                .Where(u => u.RequestStatus.ToLower() == "pending")
+                .ToList();
+            return requests;
         }
-
         public Borrowing GetBorrowingById(int borrowingId)
         {
-            throw new NotImplementedException();
+            return _context.Borrowings.FirstOrDefault(b => b.Id == borrowingId);
         }
-
         public void UpdateBorrowing(Borrowing borrowing)
         {
-            throw new NotImplementedException();
+            _context.Borrowings.Update(borrowing);
+            _context.SaveChanges();  // Lưu thay đổi vào cơ sở dữ liệu
         }
     }
 }
