@@ -15,6 +15,7 @@ namespace Mock.Repository.Repositories.Repository.Classes
             _context = context;
         }
 
+
         public APIResult<string> UpdateReturnedBook(int borrowingDetailId, int numberBookReturned)
         {
             var borrowingDetail = _context.BorrowingDetails.FirstOrDefault(c => c.Id == borrowingDetailId);
