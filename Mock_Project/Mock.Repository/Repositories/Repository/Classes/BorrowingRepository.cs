@@ -57,7 +57,7 @@ namespace Mock.Repository.Repositories.Repository.Classes
         public List<Borrowing> GetAllBorrowings()
         {
 
-            var borrowing = _context.Borrowings.Include(c => c.User).Where(c => c.RequestStatus == "Accept").ToList();
+            var borrowing = _context.Borrowings.Include(c => c.User).Where(c => c.RequestStatus.ToLower() == "Accept").ToList();
             foreach (var item in borrowing)
             {
 

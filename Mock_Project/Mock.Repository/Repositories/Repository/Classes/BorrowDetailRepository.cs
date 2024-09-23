@@ -47,7 +47,8 @@ namespace Mock.Repository.Repositories.Repository.Classes
                 bookAvailibile.Amount += numberBookReturned;
                 return APIResult<string>.SuccessResult("Đã trả sách.");
             }
-            var borrowing = _context.Borrowings.FirstOrDefault(c => c.Id == borrowingDetail.BorrowingId).BorrowingDetails.ToList();
+            var borrowing = _context.Borrowings.FirstOrDefault
+                (c => c.Id == borrowingDetail.BorrowingId).BorrowingDetails.ToList();
 
             return APIResult<string>.SuccessResult("Cập nhật số lượng sách trả thành công.");
         }
@@ -55,7 +56,8 @@ namespace Mock.Repository.Repositories.Repository.Classes
 
         public List<BorrowingDetails> ViewListBookBorrowingUser(int userId)
         {
-            return _context.BorrowingDetails.Include(c => c.Book).Include(c => c.Borrowing).Where(c => c.Borrowing.UserId == userId && c.Borrowing.RequestStatus=="Accept").ToList();
+            return _context.BorrowingDetails.Include(c => c.Book).Include(c => c.Borrowing).
+                Where(c => c.Borrowing.UserId == userId && c.Borrowing.RequestStatus.ToLower() == "accept").ToList();
         }
 
            

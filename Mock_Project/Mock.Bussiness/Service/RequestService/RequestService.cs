@@ -74,7 +74,7 @@ namespace Mock.Bussiness.Service.RequestService
         public string UpdateRequestStatus(int borrowingId, string action)
         {
             // Lấy yêu cầu mượn sách dựa trên borrowingId
-            var borrowingRequest = _unitOfWork.BorrowingRepository.GetBorrowingById(borrowingId);
+            var borrowingRequest = _unitOfWork.BorrowingRepository.GetByID(borrowingId, "BorrowingDetails");
 
             // Kiểm tra xem yêu cầu có tồn tại và có ở trạng thái "pending" hay không
             if (borrowingRequest != null && borrowingRequest.RequestStatus.ToLower() == "pending")
@@ -82,11 +82,17 @@ namespace Mock.Bussiness.Service.RequestService
                 // Kiểm tra action để xác định trạng thái mới
                 if (action.ToLower() == "accept")
                 {
-                    borrowingRequest.RequestStatus = "Accepted";
+                    borrowingRequest.RequestStatus = "Accept";
+                    foreach (var detail in borrowingRequest.BorrowingDetails)
+                    {
+                        var book = _unitOfWork.BookRepository.GetByID(detail.BookId);
+                        book.Amount -= detail.Quantity.Value;
+                    }
+
                 }
                 else if (action.ToLower() == "reject")
                 {
-                    borrowingRequest.RequestStatus = "Rejected";
+                    borrowingRequest.RequestStatus = "Reject";
                 }
                 else
                 {
