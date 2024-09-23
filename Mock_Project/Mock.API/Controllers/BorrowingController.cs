@@ -16,7 +16,7 @@ namespace Mock.API.Controllers
             _service = service;
         }
         [HttpGet]
-        public IActionResult GetAllBorrowing(string? userName, string? borrowStatus,int page=1, int pageSize=5) {
+        public IActionResult GetAllBorrowing(string? userName, string? borrowStatus,int page=1, int pageSize=100) {
 
           var result=  _service.GetAllBorrowing(page, pageSize, userName, borrowStatus);
             return Ok(result);
@@ -51,13 +51,13 @@ namespace Mock.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetBorrowingDetail(int borrowingId, int page = 1, int pageSize = 5)
+        public IActionResult GetBorrowingDetail(int borrowingId, int page = 1, int pageSize = 100)
         {
             var result = _service.GetAllBorrowingDetail(borrowingId,page, pageSize);
             return Ok(result);
         }
         [HttpGet]
-        public IActionResult ViewListBookBorrowingUser(int userId, int page = 1, int pageSize = 5)
+        public IActionResult ViewListBookBorrowingUser(int userId, int page = 1, int pageSize = 100)
         {
             var result = _service.ViewListBookBorrowingUser(userId, page, pageSize);
             return Ok(result);

@@ -12,7 +12,7 @@ namespace Mock.Core.Models
         public DateTime? ActualReturnDate { get; set; } //ngày trả thực tế
         public int? NumberReturnedBook { get; set; } = 0;
         public decimal? Penalty { get; set; }
-        public string? Status { get; set; }
+        public string? Status { get; set; } //returned, not returned
     }
 }
 
