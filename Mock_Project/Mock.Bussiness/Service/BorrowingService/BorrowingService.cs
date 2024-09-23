@@ -60,7 +60,7 @@ namespace Mock.Bussiness.Service.BorrowingService
                     UserId = item.UserId,
                     Username = item.User.Username ,
                     IsBookPickedUp=item.IsBookPickedUp == true?"Collected":"Not Pickup",
-                    IsPickUpLate=(DateTime.Now > item.ExpectedPickUpDate && item.IsBookPickedUp==false)? "Over date" : "On time"
+                    IsPickUpLate=(DateTime.Now > item.ExpectedPickUpDate && item.IsBookPickedUp==null)? "Over date" : "On time"
                 };
                 listBorrowingDTO.Add(borrowingDTO);
             }

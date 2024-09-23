@@ -26,7 +26,7 @@ namespace Mock.Repository.Repositories.Repository.Classes
             var status = c.IsBookPickedUp == false || c.IsBookPickedUp == null
                                        ? ""
                                        : (
-                                       c.BorrowingDetails.Sum(x => x.NumberReturnedBook) == c.TotalQuantity ? "Returned"
+                                       c.BorrowingDetails.Sum(x => x.NumberReturnedBook) == c.BorrowingDetails.Sum(x => x.Quantity) ? "Returned"
                                        : (
                                        c.BorrowingDetails.Sum(x => x.NumberReturnedBook) == 0 ? "Not Returned" : "Not Returned Enough"
                                        )
@@ -41,21 +41,32 @@ namespace Mock.Repository.Repositories.Repository.Classes
         public int CheckPenalty(int borrowingId)
         {
             int penalty = 0;
-            var borrowing = _context.Borrowings
+            var c = _context.Borrowings
                           .Include(c => c.BorrowingDetails)
-                          .Where(c => c.Id == borrowingId)
-                          .Select(c => new
-                          {
-                              BorrowingId = c.Id,
-                              Status = c.BorrowingDetails.All(d => d.Status != "Not Returned" || d.Status != null) ? "Returned" : "Not Returned",
-                              ExpectedReturnDate = c.ExpectedReturnDate,
-                              IsBookPickedUp = c.IsBookPickedUp
-                          }).FirstOrDefault();
-            if (borrowing.Status == "Not Returned" && borrowing.ExpectedReturnDate <= DateTime.UtcNow && borrowing.IsBookPickedUp == true)
+           .FirstOrDefault(x => x.Id == borrowingId);
+            var status = c.IsBookPickedUp == false || c.IsBookPickedUp == null
+                                       ? ""
+                                       : (
+                                       c.BorrowingDetails.Sum(x => x.NumberReturnedBook) == c.BorrowingDetails.Sum(x => x.Quantity) ? "Returned"
+                                       : (
+                                       c.BorrowingDetails.Sum(x => x.NumberReturnedBook) == 0 ? "Not Returned" : "Not Returned Enough"
+                                       )
+                                       );
+
+            if ((status == "Not Returned" || status == "Not Returned Enough") && c.ExpectedReturnDate < DateTime.UtcNow && c.IsBookPickedUp == true)
             {
-                var overdueDays = (DateTime.UtcNow - borrowing.ExpectedReturnDate).Value.Days;
+                var overdueDays = (DateTime.UtcNow - c.ExpectedReturnDate).Value.Days;
                 penalty = overdueDays * 5000;
+                c.PenaltyFine = penalty;
             }
+            var returnedDate = c.BorrowingDetails.Max(x => x.ActualReturnDate);
+            if (status == "Returned" && c.ExpectedReturnDate < returnedDate && c.IsBookPickedUp == true)
+            {
+                var overdueDays = (returnedDate - c.ExpectedReturnDate).Value.Days;
+                penalty = overdueDays * 5000;
+                c.PenaltyFine = penalty;
+            }
+
             return penalty;
         }
         public List<Borrowing> GetAllBorrowings()
