@@ -82,11 +82,11 @@ namespace Mock.Bussiness.Service.RequestService
                 // Kiểm tra action để xác định trạng thái mới
                 if (action.ToLower() == "accept")
                 {
-                    borrowingRequest.RequestStatus = "Accepted";
+                    borrowingRequest.RequestStatus = "Accept";
                 }
                 else if (action.ToLower() == "reject")
                 {
-                    borrowingRequest.RequestStatus = "Rejected";
+                    borrowingRequest.RequestStatus = "Reject";
                 }
                 else
                 {
