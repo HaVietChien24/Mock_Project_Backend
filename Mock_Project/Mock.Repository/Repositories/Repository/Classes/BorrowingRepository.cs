@@ -28,7 +28,7 @@ namespace Mock.Repository.Repositories.Repository.Classes
                              BorrowingId = c.Id,
                              Status = c.IsBookPickedUp == false
                                       ? ""  
-                                      : (c.BorrowingDetails.All(d => d.Status != "Not Returned") ? "Returned" : "Not Returned"),
+                                      : (c.BorrowingDetails.All(d => d.Status != "Not Returned") ? "Not Returned" : " Returned"),
                                ExpectedReturnDate =c.ExpectedReturnDate,
                            }).FirstOrDefault();
 
