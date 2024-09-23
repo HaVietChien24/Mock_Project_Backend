@@ -35,6 +35,7 @@ namespace Mock.Repository.Repositories.Repository.Classes
             //chưa trả => total returned =0
             //chưa trả đủ=> total returned >0 và < total mượn
 
+
             return status;
         }
         public int CheckPenalty(int borrowingId)
