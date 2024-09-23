@@ -93,6 +93,7 @@ namespace Mock.Bussiness.Service.RequestService
                 else if (action.ToLower() == "reject")
                 {
                     borrowingRequest.RequestStatus = "Reject";
+                    borrowingRequest.RequestStatus = "Reject";
                 }
                 else
                 {

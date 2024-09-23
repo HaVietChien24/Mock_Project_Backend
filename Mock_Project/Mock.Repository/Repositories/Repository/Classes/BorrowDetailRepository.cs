@@ -15,6 +15,7 @@ namespace Mock.Repository.Repositories.Repository.Classes
             _context = context;
         }
 
+
         public APIResult<string> UpdateReturnedBook(int borrowingDetailId, int numberBookReturned)
         {
             var borrowingDetail = _context.BorrowingDetails.FirstOrDefault(c => c.Id == borrowingDetailId);
@@ -27,41 +28,34 @@ namespace Mock.Repository.Repositories.Repository.Classes
             {
                 return APIResult<string>.FailureResult("Số sách trả về phải lớn hơn 0.");
             }
-            if (borrowingDetail.Quantity < numberBookReturned)
+            if (borrowingDetail.Quantity - borrowingDetail.NumberReturnedBook < numberBookReturned)
             {
                 return APIResult<string>.FailureResult("Số lượng sách trả về không phù hợp.");
             }
-            borrowingDetail.NumberReturnedBook = numberBookReturned;
 
-            if (borrowingDetail.NumberReturnedBook == borrowingDetail.Quantity)
+            if (borrowingDetail.Quantity - borrowingDetail.NumberReturnedBook == numberBookReturned)
             {
                 borrowingDetail.Status = "Returned";
                 borrowingDetail.ActualReturnDate = DateTime.Now;
+                bookAvailibile.Amount += numberBookReturned;
+                borrowingDetail.NumberReturnedBook += numberBookReturned;
                 return APIResult<string>.SuccessResult("Đã trả xong tất cả sách.");
             }
-            if (borrowingDetail.NumberReturnedBook < borrowingDetail.Quantity)
-            {
-                borrowingDetail.Status = "Not Returned";
-                borrowingDetail.ActualReturnDate = DateTime.Now;
-                borrowingDetail.Quantity -= numberBookReturned;
-                bookAvailibile.Amount += numberBookReturned;
-                return APIResult<string>.SuccessResult("Đã trả sách.");
-            }
-            var borrowing = _context.Borrowings.FirstOrDefault
-                (c => c.Id == borrowingDetail.BorrowingId).BorrowingDetails.ToList();
-
-            return APIResult<string>.SuccessResult("Cập nhật số lượng sách trả thành công.");
+            borrowingDetail.Status = "Not Returned";
+            borrowingDetail.ActualReturnDate = DateTime.Now;
+            bookAvailibile.Amount += numberBookReturned;
+            borrowingDetail.NumberReturnedBook += numberBookReturned;
+            return APIResult<string>.SuccessResult("Đã trả sách.");
         }
 
 
         public List<BorrowingDetails> ViewListBookBorrowingUser(int userId)
         {
-            return _context.BorrowingDetails.Include(c => c.Book).Include(c => c.Borrowing).
-                Where(c => c.Borrowing.UserId == userId && c.Borrowing.RequestStatus.ToLower() == "accept").ToList();
+            return _context.BorrowingDetails.Include(c => c.Book).Include(c => c.Borrowing).Where(c => c.Borrowing.UserId == userId && c.Borrowing.RequestStatus == "Accept").ToList();
         }
 
-           
-        
+
+
         public List<BorrowingDetails> getByRequestId(int requestId)
         {
             return _context.BorrowingDetails.Where(x => x.BorrowingId == requestId).ToList();

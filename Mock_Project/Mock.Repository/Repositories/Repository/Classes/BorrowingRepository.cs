@@ -20,19 +20,23 @@ namespace Mock.Repository.Repositories.Repository.Classes
         }
         public string CheckBorrowingStatus(int borrowingId)
         {
-            var borrowing = _context.Borrowings
+            var c = _context.Borrowings
                            .Include(c => c.BorrowingDetails)
-                           .Where(c => c.Id == borrowingId)
-                           .Select(c => new
-                           {
-                             BorrowingId = c.Id,
-                             Status = c.IsBookPickedUp == false
-                                      ? ""  
-                                      : (c.BorrowingDetails.All(d => d.Status != "Not Returned") ? "Returned" : "Not Returned"),
-                               ExpectedReturnDate =c.ExpectedReturnDate,
-                           }).FirstOrDefault();
+            .FirstOrDefault(x => x.Id == borrowingId);
+            var status = c.IsBookPickedUp == false || c.IsBookPickedUp == null
+                                       ? ""
+                                       : (
+                                       c.BorrowingDetails.Sum(x => x.NumberReturnedBook) == c.TotalQuantity ? "Returned"
+                                       : (
+                                       c.BorrowingDetails.Sum(x => x.NumberReturnedBook) == 0 ? "Not Returned" : "Not Returned Enough"
+                                       )
+                                       );
+            //đã trả = trả đủ hết => total returned =total mượn
+            //chưa trả => total returned =0
+            //chưa trả đủ=> total returned >0 và < total mượn
 
-            return borrowing.Status;
+
+            return status;
         }
         public int CheckPenalty(int borrowingId)
         {
@@ -43,7 +47,7 @@ namespace Mock.Repository.Repositories.Repository.Classes
                           .Select(c => new
                           {
                               BorrowingId = c.Id,
-                              Status = c.BorrowingDetails.All(d => d.Status != "Not Returned") ? "Returned" : "Not Returned",
+                              Status = c.BorrowingDetails.All(d => d.Status != "Not Returned" || d.Status != null) ? "Returned" : "Not Returned",
                               ExpectedReturnDate = c.ExpectedReturnDate,
                               IsBookPickedUp = c.IsBookPickedUp
                           }).FirstOrDefault();
@@ -78,15 +82,21 @@ namespace Mock.Repository.Repositories.Repository.Classes
         }
         public List<BorrowingDetails> GetBorrowingDetails(int borrowingId)
         {
-            var borrowingDetail = _context.BorrowingDetails.Include(c=>c.Borrowing).Include(c => c.Book).Where(c => c.BorrowingId == borrowingId).ToList();
+            var borrowingDetail = _context.BorrowingDetails.Include(c => c.Borrowing).Include(c => c.Book).Where(c => c.BorrowingId == borrowingId).ToList();
             return borrowingDetail;
         }
         public void UpdatePickup(int borrowingId)
         {
-            var borrowingPickup = _context.Borrowings.FirstOrDefault(c => c.Id == borrowingId);
-
+            var borrowingPickup = _context.Borrowings.Include(x => x.BorrowingDetails).FirstOrDefault(c => c.Id == borrowingId);
             borrowingPickup.ActualPickUpDate = DateTime.Now;
             borrowingPickup.IsBookPickedUp = true;
+
+            var borrowingDetail = borrowingPickup.BorrowingDetails;
+            foreach (var item in borrowingDetail)
+            {
+                item.Status = "Not Returned";
+            }
+
         }
         public List<Borrowing> GetAllRequestsByUserId(int id)
         {
