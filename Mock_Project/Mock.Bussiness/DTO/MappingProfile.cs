@@ -21,11 +21,10 @@ namespace Mock.Bussiness.DTO
 
             CreateMap<BorrowingDetails, BorrowingDetailDTO>()
            .ForMember(dest => dest.BookName, opt => opt.MapFrom(src => src.Book.Title))
-           .ForMember(dest =>dest.IsPickUpLate,opt=>opt.MapFrom(src=>src.Borrowing.IsPickUpLate))
+           .ForMember(dest =>dest.IsPickUpLate,opt=>opt.MapFrom(src=>(DateTime.Now > src.Borrowing.ExpectedPickUpDate && src.Borrowing.IsBookPickedUp == null) ? "Over date" : "On time"))
            .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.Book.ImageUrl))
            .ForMember(dest=>dest.IsBookPickedUp,opt=>opt.MapFrom(src=>src.Borrowing.IsBookPickedUp))
            .ForMember(dest => dest.ExpectedPickupDate, opt => opt.MapFrom(src => src.Borrowing.ExpectedPickUpDate))
-
            .ReverseMap();
          
           
