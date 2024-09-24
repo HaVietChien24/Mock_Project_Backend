@@ -117,8 +117,9 @@ namespace Mock.Bussiness.Service.BookService
 
         public BookDTO GetById(int bookId)
         {
-            var item = _unitOfWork.BookRepository.GetByID(bookId, "BookGenres,BookGenres.Genre");
+            var item = _unitOfWork.BookRepository.GetByID(bookId, "BookGenres.Genre");
             return _mapper.Map<BookDTO>(item);
+          
         }
     }
 }
