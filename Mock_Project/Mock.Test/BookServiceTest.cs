@@ -39,7 +39,6 @@ namespace Mock.Test
 
             _context.Books.Add(new Book
             {
-                Id = 1,
                 Title = "The Cat",
                 Description = "book description",
                 Author = "Martin King",
@@ -84,27 +83,32 @@ namespace Mock.Test
             Assert.IsNull(result);
         }
 
-        // Kiểm tra phương thức GetBookDTOByGenreId()
         [Test]
         public void GetBookDTOByGenreId_ValidId_ShouldReturnListOfBookDTO()
         {
             // Thêm sách với thể loại vào _context
-            var genre = new Genre { Id = 1, Name = "Fantasy" };
+            var genre = new Genre { Name = "Fantasy" };
             _context.Genres.Add(genre);
+            _context.SaveChanges();  // Gọi SaveChanges để genre có Id
+
             _context.Books.Add(new Book
             {
-                Id = 2,
                 Title = "The Dog",
                 Author = "Anna Smith",
-                BookGenres = new List<BookGenre> { new BookGenre { GenreId = 1 } }
+                Description = "A story about a dog.",
+                ISBN = "1234567890",
+                Publisher = "ABC Publisher",
+                PublishedYear = 2020,
+                BookGenres = new List<BookGenre> { new BookGenre { GenreId = genre.Id } } // Sử dụng Id của genre
             });
             _context.SaveChanges();
 
-            var result = _bookService.GetBookDTOByGenreId(1);
+            var result = _bookService.GetBookDTOByGenreId(genre.Id); // Sử dụng genre.Id thay vì 1
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual("The Dog", result[0].Title);
         }
+
 
         [Test]
         public void GetBookDTOByGenreId_InvalidId_ShouldReturnEmptyList()
@@ -114,15 +118,35 @@ namespace Mock.Test
             Assert.IsEmpty(result);
         }
 
-        // Kiểm tra phương thức SearchByTitleOrAuthor()
         [Test]
         public void SearchByTitleOrAuthor_ValidSearch_ShouldReturnListOfBookDTO()
         {
+            // Dọn dẹp dữ liệu trong bộ nhớ trước khi thêm sách mới
+            _context.Books.RemoveRange(_context.Books);
+            _context.SaveChanges();
+
+            // Thêm sách với tiêu đề cần tìm kiếm
+            _context.Books.Add(new Book
+            {
+                Title = "The Cat",
+                Author = "Jane Doe",
+                Description = "A tale about a cat.",
+                ISBN = "9876543210",
+                Publisher = "XYZ Publisher",
+                PublishedYear = 2021
+            });
+            _context.SaveChanges();
+
+            // Tìm kiếm sách với tiêu đề "The Cat"
             var result = _bookService.SearchByTitleOrAuthor("The Cat");
+
+            // Kiểm tra kết quả tìm kiếm
             Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual("The Cat", result[0].Title);
+            Assert.AreEqual(1, result.Count); // Đảm bảo chỉ có 1 kết quả
+            Assert.AreEqual("The Cat", result[0].Title); // Đảm bảo tiêu đề khớp
         }
+
+
 
         [Test]
         public void SearchByTitleOrAuthor_InvalidSearch_ShouldReturnEmptyList()

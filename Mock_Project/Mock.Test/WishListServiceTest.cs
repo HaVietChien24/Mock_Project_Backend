@@ -14,6 +14,7 @@ namespace Mock.Test
         private IUnitOfWork _unitOfWork;
         private IMapper _mapper;
         private WishListService _wishListService;
+
         [SetUp]
         public void SetUp()
         {
