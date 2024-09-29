@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Mock.Bussiness.DTO;
 using Mock.Bussiness.Service.UserService;
+using Mock.Core.Data;
 using Mock.Core.Models;
 
 namespace Mock.API.Controllers
@@ -14,10 +16,12 @@ namespace Mock.API.Controllers
 
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
-        public UserController(IUserService userService, IMapper mapper)
+        private readonly LivebraryContext _livebraryContext;
+        public UserController(IUserService userService, IMapper mapper, LivebraryContext livebraryContext)
         {
             _userService = userService;
             _mapper = mapper;
+            _livebraryContext = livebraryContext;
         }
 
 
