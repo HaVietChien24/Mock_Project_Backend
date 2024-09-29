@@ -56,7 +56,7 @@ namespace Mock.Core.Data
                 .HasOne(b => b.User)
                 .WithMany(a => a.WishLists)
                 .HasForeignKey(b => b.UserId);
-
+            
             modelBuilder.Entity<User>().HasData(
                 SeedData.SeedUser()
             );
