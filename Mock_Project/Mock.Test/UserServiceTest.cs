@@ -62,11 +62,46 @@ namespace Mock.Test
             _userService = new UserService(_unitOfWork, _mapper);
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            _context.Dispose();
+        }
+
+
+
+
         [Test]
         public void GetAllUser_ReturnAllUserList()
         {
             var allUserList = _userService.GetAll();
             Assert.That(allUserList.Count(), Is.EqualTo(SeedData.SeedUser().Count()));
+        }
+
+        [Test]
+        public void CheckPassword_PasswordCorrect()
+        {
+            var userToCheckPassword = _userService.GetByID(1);
+
+            var checkPassword = _userService.CheckPasswordCorrect("Ncs@14082011", userToCheckPassword.Password);
+            Assert.That(checkPassword, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void CheckPassword_PasswordIncorrect()
+        {
+            var userToCheckPassword = _userService.GetByID(1);
+
+            var checkPassword = _userService.CheckPasswordCorrect("Monstercat@2k11", userToCheckPassword.Password);
+            Assert.That(checkPassword, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void HashPassword_PasswordHashed()
+        {
+            var hashedPassword = _userService.HashPassword("Ncs@14082011");
+
+            Assert.NotNull(hashedPassword);
         }
 
         [Test]
@@ -77,6 +112,13 @@ namespace Mock.Test
         }
 
         [Test]
+        public void GetUserByID_ReturnNull()
+        {
+            var user = _userService.GetByID(66);
+            Assert.IsNull(user);
+        }
+
+        [Test]
         public void CreateToken_NewTokenCreated()
         {
             string token = _userService.CreateToken(SeedData.SeedUser().First());
@@ -84,16 +126,33 @@ namespace Mock.Test
         }
 
         [Test]
-        public void GetUserByID()
+        public void GetUserByUsername_ReturnOneUser()
         {
-            var user = _userService.GetByID(1);
+            var user = _userService.GetByUsername("josh_miller");
             Assert.IsNotNull(user);
         }
 
-        [TearDown]
-        public void TearDown()
+        [Test]
+        public void GetUserByUsername_ReturnNull()
         {
-            _context.Dispose();
+            var user = _userService.GetByUsername("abc");
+            Assert.IsNull(user);
+        }
+
+        [Test]
+        public void BacAccount_AccountBanned()
+        {
+            _userService.BanAccount(1);
+
+            var bannedUser = _userService.GetByID(1);
+            Assert.That(bannedUser.IsActive, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void GetAllUserByDTO_ReturnAllUserDTOList()
+        {
+            var allUserList = _userService.GetAllUser();
+            Assert.That(allUserList.Count(), Is.EqualTo(SeedData.SeedUser().Count()));
         }
     }
 }
